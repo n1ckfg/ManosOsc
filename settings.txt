@@ -1,0 +1,20 @@
+Send Osc Active
+true
+
+OSC Send IP Number
+127.0.0.1
+
+OSC Send Port
+7110
+
+Absolute Positioning Mode
+false
+
+Debug Display On
+true
+
+Show Traces
+true
+
+Time to Trace
+0.5
