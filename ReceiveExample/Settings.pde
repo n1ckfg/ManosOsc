@@ -9,7 +9,7 @@ class Settings {
       for (int i=0;i<settings.data.length;i++) {
         if (settings.data[i].equals("Stage Width")) sW = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Stage Height")) sH = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Stage Depth")) sH = setInt(settings.data[i+1]);
+        if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Framerate")) fps = setInt(settings.data[i+1]);
         if (settings.data[i].equals("OSC Receive Port")) receivePort = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Ease Amount")) ease = setFloat(settings.data[i+1]);

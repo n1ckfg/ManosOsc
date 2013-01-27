@@ -7,6 +7,12 @@ OSC Send IP Number
 OSC Send Port
 7110
 
+Stage Depth
+400
+
+Reverse Z Axis
+true
+
 Absolute Positioning Mode
 false
 

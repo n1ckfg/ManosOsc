@@ -21,9 +21,9 @@ void oscEvent(OscMessage msg) {
         int idHand = msg.get(0).intValue();
         hands[idHand].show = true;
         hands[idHand].idHand = idHand;
-        hands[idHand].t.x = msg.get(1).floatValue();
-        hands[idHand].t.y = msg.get(2).floatValue();
-        hands[idHand].t.z = msg.get(3).floatValue();
+        hands[idHand].t.x = sW * msg.get(1).floatValue();
+        hands[idHand].t.y = sH * msg.get(2).floatValue();
+        hands[idHand].t.z = sD * msg.get(3).floatValue();
         //attempt to filter NaNs
         //if (hands[idHand].p.x > -10000 && hands[idHand].p.y > -10000 && hands[idHand].p.z > -10000){
           println(hands[idHand].idHand + " " + hands[idHand].p);
@@ -41,9 +41,9 @@ void oscEvent(OscMessage msg) {
         hands[idHand].oscFinger[idFinger].show = true;
         hands[idHand].oscFinger[idFinger].idHand = idHand;
         hands[idHand].oscFinger[idFinger].idFinger = idFinger;
-        hands[idHand].oscFinger[idFinger].t.x = msg.get(2).floatValue();
-        hands[idHand].oscFinger[idFinger].t.y = msg.get(3).floatValue();
-        hands[idHand].oscFinger[idFinger].t.z = msg.get(4).floatValue();
+        hands[idHand].oscFinger[idFinger].t.x = sW * msg.get(2).floatValue();
+        hands[idHand].oscFinger[idFinger].t.y = sH * msg.get(3).floatValue();
+        hands[idHand].oscFinger[idFinger].t.z = sD * msg.get(4).floatValue();
         //attempt to filter NaNs
         //if (hands[idHand].oscFinger[idFinger].p.x > -10000 && hands[idHand].oscFinger[idFinger].p.y > -10000 && hands[idHand].oscFinger[idFinger].p.z > -10000){
           println(hands[idHand].oscFinger[idFinger].idHand + " " + hands[idHand].oscFinger[idFinger].idFinger + " " + hands[idHand].oscFinger[idFinger].p);

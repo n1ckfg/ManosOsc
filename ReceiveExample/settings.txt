@@ -1,11 +1,11 @@
 Stage Width
-800
+1280
 
 Stage Height
-450
+720
 
 Stage Depth
-500
+1000
 
 Framerate
 60

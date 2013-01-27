@@ -6,6 +6,7 @@ int leapW = 16*50;
 int leapH = 9*50;
 int sW = leapW;
 int sH = leapH;
+int sD = 400;
 int fps = 60;
 float ease = 10;
 

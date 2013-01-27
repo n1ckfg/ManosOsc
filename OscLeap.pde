@@ -1,6 +1,7 @@
 import com.leapmotion.leap.Controller;
 //import com.leapmotion.leap.Frame;
 import com.leapmotion.leap.Hand;
+import com.leapmotion.leap.Tool;
 import com.leapmotion.leap.FingerList;
 import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Vector;
@@ -76,16 +77,48 @@ void oscLeapSetup() {
 }
 
 void oscLeapUpdate() {
-  for (int i=0;i<hands.length;i++) {
-    hands[i].run();
+  if(absPositioning){
+    for (Map.Entry entry : fingerPositions.entrySet()){
+      Integer fingerId = (Integer) entry.getKey();
+      Vector position = (Vector) entry.getValue();
+      fill(fingerColors.get(fingerId));
+      noStroke();
+      ellipse(leapToScreenX(position.getX()), leapToScreenY(position.getY()), 24.0, 24.0);
+    }
+    for (Map.Entry entry : toolPositions.entrySet()){
+      Integer toolId = (Integer) entry.getKey();
+      Vector position = (Vector) entry.getValue();
+      fill(toolColors.get(toolId));
+      noStroke();
+      ellipse(leapToScreenX(position.getX()), leapToScreenY(position.getY()), 24.0, 24.0);
+    }
+  }else{
+    for (int i=0;i<hands.length;i++) {
+      hands[i].run();
+    }
   }
 }
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void onFrame(final Controller controller) {
+  //relative positioning based on LeapCircles by Grace Christenbery
   //println("Frame");
   com.leapmotion.leap.Frame frame = controller.frame();
+  if(absPositioning){
+  for (Finger finger : frame.fingers()){
+    int fingerId = finger.id();
+    color c = color(random(0, 255), random(0, 255), random(0, 255));
+    fingerColors.putIfAbsent(fingerId, c);
+    fingerPositions.put(fingerId, finger.tipPosition());
+  }
+  for (Tool tool : frame.tools()){
+    int toolId = tool.id();
+    color c = color(random(0, 255), random(0, 255), random(0, 255));
+    toolColors.putIfAbsent(toolId, c);
+    toolPositions.put(toolId, tool.tipPosition());
+  }
+  }else{
   /*
     println("Frame id: " + frame.id()
    + ", timestamp: " + frame.timestamp()
@@ -97,7 +130,11 @@ void onFrame(final Controller controller) {
   // Get the first hand
   if(hands.length > 0){
   for (int i=0;i<hands.length;i++) {
-    if(i==0 || i>0 && hands[0].fingerCount >0){ //crude way to check for two hands?
+    int foo = 0; 
+    try{
+      foo = hands[0].fingerCount;
+    }catch(Exception qq){ }
+    if(i==0 || i>0 && foo >0){ //crude way to check for two hands? throwing nullpointer errors
     try{
       hands[i].fingerCount = 0;
       hands[i].p = new PVector(0, 0, 0);
@@ -145,7 +182,8 @@ void onFrame(final Controller controller) {
               float pixelY = height*(1-abs(screenPoint.get(1)));
               //println("X Pixel: " + pixelX + "Y Pixel: " + pixelY);
 
-              float pixelZ = -1 * point.get(2);
+              float pixelZ = point.get(2);
+              if(reverseZ) pixelZ *= -1;
               //println(pixelX + " " + pixelY + " " + pixelZ);
               //Give the pixel values to pixelPoint for the draw() function.
               hands[i].oscFinger[j].p = new PVector(pixelX, pixelY, pixelZ);
@@ -193,6 +231,7 @@ void onFrame(final Controller controller) {
   }
   }
   }//null check -- trying to protect against starting with no hands
+  }
 }
 
 //--
