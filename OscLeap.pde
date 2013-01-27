@@ -15,7 +15,7 @@ import netP5.*;
 
 String ipNumber = "127.0.0.1";
 int sendPort = 7110;
-int receivePort = 4321;
+int receivePort = 33333;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
 //---
@@ -77,26 +77,9 @@ void oscLeapSetup() {
 }
 
 void oscLeapUpdate() {
-  if(absPositioning){
-    for (Map.Entry entry : fingerPositions.entrySet()){
-      Integer fingerId = (Integer) entry.getKey();
-      Vector position = (Vector) entry.getValue();
-      fill(fingerColors.get(fingerId));
-      noStroke();
-      ellipse(leapToScreenX(position.getX()), leapToScreenY(position.getY()), 24.0, 24.0);
-    }
-    for (Map.Entry entry : toolPositions.entrySet()){
-      Integer toolId = (Integer) entry.getKey();
-      Vector position = (Vector) entry.getValue();
-      fill(toolColors.get(toolId));
-      noStroke();
-      ellipse(leapToScreenX(position.getX()), leapToScreenY(position.getY()), 24.0, 24.0);
-    }
-  }else{
     for (int i=0;i<hands.length;i++) {
       hands[i].run();
     }
-  }
 }
 
 
@@ -105,20 +88,6 @@ void onFrame(final Controller controller) {
   //relative positioning based on LeapCircles by Grace Christenbery
   //println("Frame");
   com.leapmotion.leap.Frame frame = controller.frame();
-  if(absPositioning){
-  for (Finger finger : frame.fingers()){
-    int fingerId = finger.id();
-    color c = color(random(0, 255), random(0, 255), random(0, 255));
-    fingerColors.putIfAbsent(fingerId, c);
-    fingerPositions.put(fingerId, finger.tipPosition());
-  }
-  for (Tool tool : frame.tools()){
-    int toolId = tool.id();
-    color c = color(random(0, 255), random(0, 255), random(0, 255));
-    toolColors.putIfAbsent(toolId, c);
-    toolPositions.put(toolId, tool.tipPosition());
-  }
-  }else{
   /*
     println("Frame id: " + frame.id()
    + ", timestamp: " + frame.timestamp()
@@ -177,16 +146,24 @@ void onFrame(final Controller controller) {
               //println("Bottom-left Corner: " +  bottomLeftCorner);
 
               //Tell what pixel coordinate the leaper is pointing to.
-              float pixelX = width*screenPoint.get(0);
-              //Without subtracting from 1, the Y is inverted.
-              float pixelY = height*(1-abs(screenPoint.get(1)));
-              //println("X Pixel: " + pixelX + "Y Pixel: " + pixelY);
+              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              PVector answer = new PVector(0,0,0);
+              if(absPositioning){
+                answer.x = leapToScreenX(point.get(0));
+                answer.y = leapToScreenY(point.get(1));
+              }else{
+                answer.x = width*screenPoint.get(0);
+                //Without subtracting from 1, the Y is inverted.
+                answer.y = height*(1-abs(screenPoint.get(1)));
+                //println("X Pixel: " + pixelX + "Y Pixel: " + pixelY);
+              }
+              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-              float pixelZ = point.get(2);
-              if(reverseZ) pixelZ *= -1;
+              answer.z = point.get(2);
+              if(reverseZ) answer.z *= -1;
               //println(pixelX + " " + pixelY + " " + pixelZ);
               //Give the pixel values to pixelPoint for the draw() function.
-              hands[i].oscFinger[j].p = new PVector(pixelX, pixelY, pixelZ);
+              hands[i].oscFinger[j].p = answer;
               if(i>0 && hitDetect3D(hands[i].oscFinger[j].p, new PVector(5,5,5), hands[i-1].oscFinger[j].p, new PVector(5,5,5))) hands[i].oscFinger[j].show = false;
               hands[i].oscFinger[j].idFinger = j;
               try {
@@ -229,7 +206,7 @@ void onFrame(final Controller controller) {
       }catch(Exception f){ }
     }
   }
-  }
+  
   }//null check -- trying to protect against starting with no hands
   }
 }

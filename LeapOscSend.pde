@@ -28,12 +28,6 @@ String fontFace = "Arial";
 int fontSize = 12;
 int fontOverSample = 2;
 
-//abs pos stuff
-ConcurrentMap<Integer, Integer> fingerColors;
-ConcurrentMap<Integer, Integer> toolColors;
-ConcurrentMap<Integer, Vector> fingerPositions;
-ConcurrentMap<Integer, Vector> toolPositions;
-
 void setup() {
   Settings settings = new Settings("settings.txt");
   oscLeapSetup();
@@ -43,13 +37,6 @@ void setup() {
   frameCount = 0;
   font = createFont(fontFace, fontOverSample*fontSize);
   textFont(font, fontSize);
-  //~~~~~~~~
-  //abs pos stuff
-  fingerColors = new ConcurrentHashMap<Integer, Integer>();
-  toolColors = new ConcurrentHashMap<Integer, Integer>();
-  fingerPositions = new ConcurrentHashMap<Integer, Vector>();
-  toolPositions = new ConcurrentHashMap<Integer, Vector>();
-  //~~~~~~~~
   }
 
 void draw() {
