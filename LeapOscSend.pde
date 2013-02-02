@@ -59,21 +59,4 @@ void draw() {
   //oscTest();
 }
 
-//~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
-static float LEAP_WIDTH = 200.0; // in mm
-static float LEAP_HEIGHT = 700.0; // in mm
-
-float leapToScreenX(float x){
-  float c = width / 2.0;
-  if (x > 0.0)  {
-    return lerp(c, width, x/LEAP_WIDTH);
-  }else{
-    return lerp(c, 0.0, -x/LEAP_WIDTH);
-  }
-}
-
-float leapToScreenY(float y){
-  return lerp(height, 0.0, y/LEAP_HEIGHT);
-}
-
 

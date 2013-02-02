@@ -7,6 +7,7 @@ import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Vector;
 import com.leapmotion.leap.Screen;
 import com.leapmotion.leap.processing.LeapMotion;
+//import com.onformative.leap.LeapMotionP5; //alt library
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 //based on oscP5parsing by andreas schlegel
@@ -66,6 +67,10 @@ void oscTest(){
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 LeapMotion leapMotion;
+//~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
+static float LEAP_WIDTH = 200.0; // in mm
+static float LEAP_HEIGHT = 700.0; // in mm
+//~~~~~~~~~~~~~~~~~~~~~~
 OscHand[] hands = new OscHand[2];
 
 void oscLeapSetup() {
@@ -197,7 +202,7 @@ void onFrame(final Controller controller) {
        */
       hands[i].p.div(hands[i].fingerCount);
       if(i>0 && hitDetect3D(hands[i].p, new PVector(5,5,5), hands[i-1].p, new PVector(5,5,5))) hands[i].show = false;
-      println("hand " + hands[i].p + " " + hands[i].fingerCount);
+      //println("hand " + hands[i].p + " " + hands[i].fingerCount);
       if (hands[i].p.x > -10000 && hands[i].p.y > -10000 && hands[i].p.z > -10000) hands[i].show = true;
     }
     catch(Exception e) {
@@ -228,6 +233,29 @@ void onDisconnect(final Controller controller) {
 void onExit(final Controller controller) {
   //println("Exited");
 }
+
+//~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
+float leapToScreenX(float x){
+  float c = width / 2.0;
+  if (x > 0.0)  {
+    return lerp(c, width, x/LEAP_WIDTH);
+  }else{
+    return lerp(c, 0.0, -x/LEAP_WIDTH);
+  }
+}
+
+float leapToScreenY(float y){
+  return lerp(height, 0.0, y/LEAP_HEIGHT);
+}
+
+/*
+//from alt library
+void stop() {
+  leapMotion.stop();
+  super.stop();
+}
+*/
+//~~~~~~~~~~~~~~~~~~~~~~ 
 
 //2D Hit Detect.  Assumes center.  x,y,w,h of object 1, x,y,w,h, of object 2.
 boolean hitDetect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
