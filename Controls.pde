@@ -6,6 +6,9 @@ void keyPressed(){
   if(key=='t'||key=='T'){
     showTraces = !showTraces;
   }
+  if(key=='z'||key=='Z'){
+    reverseZ = !reverseZ;
+  }
   if(key==' '){
     absPositioning = !absPositioning;
   }  

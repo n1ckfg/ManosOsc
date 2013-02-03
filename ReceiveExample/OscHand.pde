@@ -1,10 +1,12 @@
 class OscHand {
 
   OscFinger[] oscFinger = new OscFinger[5];
+  OscTool[] oscTool = new OscTool[5];
   PVector p, s, t, e;
   boolean show = false;
   int idHand = 0;
   int fingerCount = 0;
+  int toolCount = 0;
   PFont font;
   String fontFace = "Arial";
   int fontSize = 12;
@@ -15,6 +17,9 @@ class OscHand {
   OscHand() {
     for (int i=0;i<oscFinger.length;i++) {
       oscFinger[i] = new OscFinger();
+    }
+    for (int i=0;i<oscTool.length;i++) {
+      oscTool[i] = new OscTool();
     }
     p = new PVector(0, 0, 0);
     t = new PVector(0, 0, 0);
@@ -29,6 +34,10 @@ class OscHand {
     for (int i=0;i<oscFinger.length;i++) {
       oscFinger[i].idHand = idHand;      
       oscFinger[i].run();
+    }
+    for (int i=0;i<oscTool.length;i++) {
+      oscTool[i].idHand = idHand;      
+      oscTool[i].run();
     }
     p = tween3D(p,t,e);
   }

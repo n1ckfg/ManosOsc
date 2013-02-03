@@ -13,8 +13,9 @@ class OscFinger {
   int fontSize = 12;
   int fontOverSample = 1;
 
-  color fillColor0 = color(250, 50, 50);
-  color fillColor1 = color(50, 50, 250);
+  color fillColor0 = color(250, 50, 50); //1st hand = red
+  color fillColor1 = color(50, 50, 250); //2nd hand = blue
+  color fillColor2 = color(50, 250, 50); //tool = green
 
   OscFinger() {
     p = new PVector(0, 0, 0);

@@ -1,10 +1,12 @@
 class OscHand {
 
   OscFinger[] oscFinger = new OscFinger[5];
+  OscTool[] oscTool = new OscTool[5];
   PVector p, s;
   boolean show = false;
   int idHand = 0;
   int fingerCount = 0;
+  int toolCount = 0;
 
   PFont font;
   String fontFace = "Arial";
@@ -19,6 +21,9 @@ class OscHand {
     for (int i=0;i<oscFinger.length;i++) {
       oscFinger[i] = new OscFinger();
     }
+    for (int i=0;i<oscTool.length;i++) {
+      oscTool[i] = new OscTool();
+    }
     p = new PVector(0, 0, 0);
     s = new PVector(20, 20);
     font = createFont(fontFace, fontOverSample*fontSize);
@@ -29,6 +34,10 @@ class OscHand {
     for (int i=0;i<oscFinger.length;i++) {
       oscFinger[i].idHand = idHand;      
       oscFinger[i].run();
+    }
+    for (int i=0;i<oscTool.length;i++) {
+      oscTool[i].idHand = idHand;      
+      oscTool[i].run();
     }
   }
 
@@ -67,6 +76,7 @@ class OscHand {
     if (sendOsc) {
       sendHand();
       sendFinger();
+      sendTool();
     }
   }
 
@@ -77,12 +87,32 @@ class OscHand {
         //attempt to filter NaNs
         //if(oscFinger[i].show && oscFinger[i].p.x > -10000 && oscFinger[i].p.y > -10000 && oscFinger[i].p.z > -10000){
         if(oscFinger[i].show){
-          myMessage = new OscMessage("/" + "hand" + idHand + "-" + oscFinger[i].idFinger);
+          myMessage = new OscMessage("/" + "finger" + idHand + "-" + oscFinger[i].idFinger);
           myMessage.add(oscFinger[i].idHand);
           myMessage.add(oscFinger[i].idFinger);
           myMessage.add(oscFinger[i].p.x/sW);
           myMessage.add(oscFinger[i].p.y/sH);
           myMessage.add(oscFinger[i].p.z/sD);
+          oscP5.send(myMessage, myRemoteLocation);
+        }
+      }catch(Exception e){ }
+    }
+  }
+
+  void sendTool() {
+    OscMessage myMessage;
+    for (int i=0;i<toolCount;i++) {
+      try{
+        //attempt to filter NaNs
+        //if(oscFinger[i].show && oscFinger[i].p.x > -10000 && oscFinger[i].p.y > -10000 && oscFinger[i].p.z > -10000){
+        if(oscFinger[i].show){
+          myMessage = new OscMessage("/" + "tool" + idHand + "-" + oscTool[i].idTool);
+          myMessage.add("tool");
+          myMessage.add(oscTool[i].idHand);
+          myMessage.add(oscTool[i].idTool);
+          myMessage.add(oscTool[i].p.x/sW);
+          myMessage.add(oscTool[i].p.y/sH);
+          myMessage.add(oscTool[i].p.z/sD);
           oscP5.send(myMessage, myRemoteLocation);
         }
       }catch(Exception e){ }

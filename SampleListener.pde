@@ -24,8 +24,14 @@ class SampleListener extends Listener {
 void onFrame(com.leapmotion.leap.Controller controller) {
   //relative positioning based on LeapCircles by Grace Christenbery
   //println("Frame");
-  com.leapmotion.leap.Frame frame = controller.frame();
   /*
+  //next three lines moved to OscLeap to make globals...
+  com.leapmotion.leap.Frame frame = controller.frame();
+  Screen screen = controller.calibratedScreens().get(0);
+  com.leapmotion.leap.Vector bottomLeftCorner = screen.bottomLeftCorner();
+  */
+  frame = controller.frame();
+   /*
     println("Frame id: " + frame.id()
    + ", timestamp: " + frame.timestamp()
    + ", hands: " + frame.hands().count()
@@ -43,6 +49,7 @@ void onFrame(com.leapmotion.leap.Controller controller) {
     if(i==0 || i>0 && foo >0){ //crude way to check for two hands? throwing nullpointer errors
     try{
       hands[i].fingerCount = 0;
+      hands[i].toolCount = 0;
       hands[i].p = new PVector(0, 0, 0);
     }catch(Exception e){ }
     try {
@@ -50,8 +57,12 @@ void onFrame(com.leapmotion.leap.Controller controller) {
       hands[i].idHand = i;
       // Get fingers
       FingerList fingers = hand.fingers();
+      ToolList tools = hand.tools();
 
       if (!frame.hands().empty()) {
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //1-2.  FINGERS
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         //Check if the hand has fingers.
         if (!fingers.empty()) {
 
@@ -64,8 +75,6 @@ void onFrame(com.leapmotion.leap.Controller controller) {
           //println("Hand " + (i+1) + " has " + fingers.count() + " fingers, average finger tip position: " + avgPos);
 
           //Tell the position of the leaper's (user's) fingertip.
-          Screen screen = controller.calibratedScreens().get(0);
-           com.leapmotion.leap.Vector bottomLeftCorner = screen.bottomLeftCorner();
           //~~~
           for (int j=0;j<hands[i].oscFinger.length;j++) {
             hands[i].oscFinger[j].show = true;
@@ -119,6 +128,65 @@ void onFrame(com.leapmotion.leap.Controller controller) {
 
           //~~~
         }
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        //2-2.  TOOLS
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        if (!tools.empty()) {
+
+          //~~~
+          for (int j=0;j<hands[i].oscTool.length;j++) {
+            hands[i].oscTool[j].show = true;
+            try {
+              Tool pointer = tools.get(j);
+               com.leapmotion.leap.Vector point = pointer.tipPosition();
+              //println("You are pointing at: " + point);
+              float distance = screen.distanceToPoint(point);
+              //println("The distance from the screen to your finger tip is: " + distance + "mm");
+
+              //Tell what point on the screen the leaper is pointing at.
+               com.leapmotion.leap.Vector screenPoint = screen.intersect(pointer, true);
+              //println("You are pointing at this point on the screen: " + screenPoint);
+              //The vector of the bottom left corner
+              //println("Bottom-left Corner: " +  bottomLeftCorner);
+
+              //Tell what pixel coordinate the leaper is pointing to.
+              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+              PVector answer = new PVector(0,0,0);
+              if(absPositioning){
+                answer.x = leapToScreenX(point.get(0));
+                answer.y = leapToScreenY(point.get(1));
+              }else{
+                answer.x = width*screenPoint.get(0);
+                //Without subtracting from 1, the Y is inverted.
+                answer.y = height*(1-abs(screenPoint.get(1)));
+                //println("X Pixel: " + pixelX + "Y Pixel: " + pixelY);
+              }
+              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+              answer.z = point.get(2);
+              if(reverseZ) answer.z *= -1;
+              //println(pixelX + " " + pixelY + " " + pixelZ);
+              //Give the pixel values to pixelPoint for the draw() function.
+              hands[i].oscTool[j].p = answer;
+              if(i>0 && hitDetect3D(hands[i].oscTool[j].p, new PVector(5,5,5), hands[i-1].oscTool[j].p, new PVector(5,5,5))) hands[i].oscTool[j].show = false;
+              hands[i].oscTool[j].idTool = j;
+              try {
+                if (hands[i].oscTool[j].p.x > -10000 && hands[i].oscTool[j].p.y > -10000 && hands[i].oscTool[j].p.z > -10000) {
+                  hands[i].p.add(hands[i].oscTool[j].p);
+                  hands[i].toolCount++;
+                }
+              }
+              catch(Exception e) {
+              }
+          }
+            catch(Exception e) {
+              hands[i].oscTool[j].show = false;
+            }
+          }
+
+          //~~~
+        }        
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       }
 
 

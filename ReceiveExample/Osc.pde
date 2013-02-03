@@ -7,7 +7,11 @@ int receivePort = 7110;
 OscP5 oscP5;
 
 String[] oscChannelNames = { 
-  "hand0", "hand0-0", "hand0-1", "hand0-2", "hand0-3", "hand0-4", "hand1", "hand1-0", "hand1-1", "hand1-2", "hand1-3", "hand1-4"
+  "hand0", "hand1", 
+  "finger0-0", "finger0-1", "finger0-2", "finger0-3", "finger0-4", 
+  "finger1-0", "finger1-1", "finger1-2", "finger1-3", "finger1-4",
+  "tool0-0", "tool0-1", "tool0-2", "tool0-3", "tool0-4", 
+  "tool1-0", "tool1-1", "tool1-2", "tool1-3", "tool1-4"
 };
 
 void oscSetup() {
@@ -47,6 +51,19 @@ void oscEvent(OscMessage msg) {
         //attempt to filter NaNs
         //if (hands[idHand].oscFinger[idFinger].p.x > -10000 && hands[idHand].oscFinger[idFinger].p.y > -10000 && hands[idHand].oscFinger[idFinger].p.z > -10000){
           println(hands[idHand].oscFinger[idFinger].idHand + " " + hands[idHand].oscFinger[idFinger].idFinger + " " + hands[idHand].oscFinger[idFinger].p);
+        //}
+    }else if (msg.checkAddrPattern("/"+oscChannelNames[i]) && msg.checkTypetag("siifff")) { //a tool
+        int idHand = msg.get(1).intValue();
+        int idTool = msg.get(2).intValue();
+        hands[idHand].oscTool[idTool].show = true;
+        hands[idHand].oscTool[idTool].idHand = idHand;
+        hands[idHand].oscTool[idTool].idTool = idTool;
+        hands[idHand].oscTool[idTool].t.x = sW * msg.get(3).floatValue();
+        hands[idHand].oscTool[idTool].t.y = sH * msg.get(4).floatValue();
+        hands[idHand].oscTool[idTool].t.z = sD * msg.get(5).floatValue();
+        //attempt to filter NaNs
+        //if (hands[idHand].oscTool[idTool].p.x > -10000 && hands[idHand].oscTool[idTool].p.y > -10000 && hands[idHand].oscTool[idTool].p.z > -10000){
+          println(hands[idHand].oscTool[idTool].idHand + " " + hands[idHand].oscTool[idTool].idTool + " " + hands[idHand].oscTool[idTool].p);
         //}
     }
   }
