@@ -1,14 +1,4 @@
-import com.leapmotion.leap.Controller;
-//import com.leapmotion.leap.Frame;
-import com.leapmotion.leap.Hand;
-import com.leapmotion.leap.Tool;
-import com.leapmotion.leap.FingerList;
-import com.leapmotion.leap.Finger;
-import com.leapmotion.leap.Vector;
-import com.leapmotion.leap.Screen;
-import com.leapmotion.leap.processing.LeapMotion;
-//import com.onformative.leap.LeapMotionP5; //alt library
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+import com.leapmotion.leap.*;
 
 //based on oscP5parsing by andreas schlegel
 import oscP5.*;
@@ -19,243 +9,48 @@ int sendPort = 7110;
 int receivePort = 33333;
 OscP5 oscP5;
 NetAddress myRemoteLocation;
-//---
-/*
-String[] oscChannelNames = { 
-  "hand0", "hand0-0", "hand0-1", "hand0-2", "hand0-3", "hand0-4", "hand1", "hand1-0", "hand1-1", "hand1-2", "hand1-3", "hand1-4"
-};
-float[] oscSendData = { 
-  0, 0, 0
-};
-*/
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+SampleListener listener;
+Controller controller;
 
-//1.  This function initializes OSC.  Put it in your setup().
 void oscSetup() {
   oscP5 = new OscP5(this, receivePort);
   myRemoteLocation = new NetAddress(ipNumber, sendPort);
 }
 
-//2.  This function sends OSC.  Put it in your draw(), or in control functions like mousePressed() and keyPressed().
-/*
-void oscSend() {
-  //--
-  if (sendOsc) {
-    OscMessage myMessage;
-
-    for (int i=0;i<oscChannelNames.length;i++) {
-      myMessage = new OscMessage("/" + oscChannelNames[i]);
-      for(int j=0;j<oscSendData.length;j++){
-        myMessage.add(oscSendData[j]);
-      }
-      oscP5.send(myMessage, myRemoteLocation);
-    }
-  }
-}
-*/
-
-void oscTest(){
-  if (sendOsc) {
-    OscMessage myMessage;
-    myMessage = new OscMessage("/foo");
-    myMessage.add(0);
-    oscP5.send(myMessage, myRemoteLocation);
-  }
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-LeapMotion leapMotion;
-//~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
-static float LEAP_WIDTH = 200.0; // in mm
-static float LEAP_HEIGHT = 700.0; // in mm
-//~~~~~~~~~~~~~~~~~~~~~~
 OscHand[] hands = new OscHand[2];
 
 void oscLeapSetup() {
   oscSetup();
-  leapMotion = new LeapMotion(this);
+  listener = new SampleListener();
+  controller = new Controller();
+  controller.addListener(listener);
+  //~~~~~~~~~~~~~~~
   for (int i=0;i<hands.length;i++) {
     hands[i] = new OscHand();
   }
 }
 
 void oscLeapUpdate() {
-    for (int i=0;i<hands.length;i++) {
+  
+  //stuff from Alex's
+  /*
+  try {
+    System.in.read();
+  }catch (IOException e) {
+    e.printStackTrace();
+  }*/
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  for (int i=0;i<hands.length;i++) {
       hands[i].run();
     }
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 }
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void onFrame(final Controller controller) {
-  //relative positioning based on LeapCircles by Grace Christenbery
-  //println("Frame");
-  com.leapmotion.leap.Frame frame = controller.frame();
-  /*
-    println("Frame id: " + frame.id()
-   + ", timestamp: " + frame.timestamp()
-   + ", hands: " + frame.hands().count()
-   + ", fingers: " + frame.fingers().count()
-   + ", tools: " + frame.tools().count());
-   */
-
-  // Get the first hand
-  if(hands.length > 0){
-  for (int i=0;i<hands.length;i++) {
-    int foo = 0; 
-    try{
-      foo = hands[0].fingerCount;
-    }catch(Exception qq){ }
-    if(i==0 || i>0 && foo >0){ //crude way to check for two hands? throwing nullpointer errors
-    try{
-      hands[i].fingerCount = 0;
-      hands[i].p = new PVector(0, 0, 0);
-    }catch(Exception e){ }
-    try {
-      Hand hand = frame.hands().get(i);
-      hands[i].idHand = i;
-      // Get fingers
-      FingerList fingers = hand.fingers();
-
-      if (!frame.hands().empty()) {
-        //Check if the hand has fingers.
-        if (!fingers.empty()) {
-
-          //Calculate the hand's average finger tip position
-          Vector avgPos = Vector.zero();
-          for (Finger finger : fingers) {
-            avgPos = avgPos.plus(finger.tipPosition());
-          }
-          avgPos = avgPos.divide(fingers.count());
-          //println("Hand " + (i+1) + " has " + fingers.count() + " fingers, average finger tip position: " + avgPos);
-
-          //Tell the position of the leaper's (user's) fingertip.
-          Screen screen = controller.calibratedScreens().get(0);
-          Vector bottomLeftCorner = screen.bottomLeftCorner();
-          //~~~
-          for (int j=0;j<hands[i].oscFinger.length;j++) {
-            hands[i].oscFinger[j].show = true;
-            try {
-              Finger pointer = fingers.get(j);
-              Vector point = pointer.tipPosition();
-              //println("You are pointing at: " + point);
-              float distance = screen.distanceToPoint(point);
-              //println("The distance from the screen to your finger tip is: " + distance + "mm");
-
-              //Tell what point on the screen the leaper is pointing at.
-              Vector screenPoint = screen.intersect(pointer, true);
-              //println("You are pointing at this point on the screen: " + screenPoint);
-              //The vector of the bottom left corner
-              //println("Bottom-left Corner: " +  bottomLeftCorner);
-
-              //Tell what pixel coordinate the leaper is pointing to.
-              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-              PVector answer = new PVector(0,0,0);
-              if(absPositioning){
-                answer.x = leapToScreenX(point.get(0));
-                answer.y = leapToScreenY(point.get(1));
-              }else{
-                answer.x = width*screenPoint.get(0);
-                //Without subtracting from 1, the Y is inverted.
-                answer.y = height*(1-abs(screenPoint.get(1)));
-                //println("X Pixel: " + pixelX + "Y Pixel: " + pixelY);
-              }
-              //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-              answer.z = point.get(2);
-              if(reverseZ) answer.z *= -1;
-              //println(pixelX + " " + pixelY + " " + pixelZ);
-              //Give the pixel values to pixelPoint for the draw() function.
-              hands[i].oscFinger[j].p = answer;
-              if(i>0 && hitDetect3D(hands[i].oscFinger[j].p, new PVector(5,5,5), hands[i-1].oscFinger[j].p, new PVector(5,5,5))) hands[i].oscFinger[j].show = false;
-              hands[i].oscFinger[j].idFinger = j;
-              try {
-                if (hands[i].oscFinger[j].p.x > -10000 && hands[i].oscFinger[j].p.y > -10000 && hands[i].oscFinger[j].p.z > -10000) {
-                  hands[i].p.add(hands[i].oscFinger[j].p);
-                  hands[i].fingerCount++;
-                }
-              }
-              catch(Exception e) {
-              }
-          }
-            catch(Exception e) {
-              hands[i].oscFinger[j].show = false;
-            }
-          }
-
-          //~~~
-        }
-      }
-
-
-      //Get the hand's normal vector and direction
-      Vector normal = hand.palmNormal();
-      Vector direction = hand.direction();
-
-      //Calculate the hand's pitch, roll, and yaw angles
-      /*
-    println("Hand " + (i+1) + " pitch: " + Math.toDegrees(direction.pitch()) + " degrees, "
-       + "roll: " + Math.toDegrees(normal.roll()) + " degrees, "
-       + "yaw: " + Math.toDegrees(direction.yaw()) + " degrees\n");
-       */
-      hands[i].p.div(hands[i].fingerCount);
-      if(i>0 && hitDetect3D(hands[i].p, new PVector(5,5,5), hands[i-1].p, new PVector(5,5,5))) hands[i].show = false;
-      //println("hand " + hands[i].p + " " + hands[i].fingerCount);
-      if (hands[i].p.x > -10000 && hands[i].p.y > -10000 && hands[i].p.z > -10000) hands[i].show = true;
-    }
-    catch(Exception e) {
-      try{
-        hands[i].show=false;
-      }catch(Exception f){ }
-    }
-  }
-  
-  }//null check -- trying to protect against starting with no hands
-  }
+void stop(){
+  controller.removeListener(listener);
 }
-
-//--
-
-void onInit(final Controller controller) {
-  //println("Initialized");
-}
-
-void onConnect(final Controller controller) {
-  //println("Connected");
-}
-
-void onDisconnect(final Controller controller) {
-  //println("Disconnected");
-}
-
-void onExit(final Controller controller) {
-  //println("Exited");
-}
-
-//~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
-float leapToScreenX(float x){
-  float c = width / 2.0;
-  if (x > 0.0)  {
-    return lerp(c, width, x/LEAP_WIDTH);
-  }else{
-    return lerp(c, 0.0, -x/LEAP_WIDTH);
-  }
-}
-
-float leapToScreenY(float y){
-  return lerp(height, 0.0, y/LEAP_HEIGHT);
-}
-
-/*
-//from alt library
-void stop() {
-  leapMotion.stop();
-  super.stop();
-}
-*/
-//~~~~~~~~~~~~~~~~~~~~~~ 
 
 //2D Hit Detect.  Assumes center.  x,y,w,h of object 1, x,y,w,h, of object 2.
 boolean hitDetect(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {

@@ -1,14 +1,9 @@
 //LeapOscSend by Nick Fox-Gieg | fox-gieg.com
-
-//NOTE: The Leap Processing library doesn't seem to like OpenGL.
-//It'll crash on startup, or shortly after, about 2 out of 3 times.
-//I'm leaving OpenGl on because it provides a 2x speed boost and 3D position.
+//bits by Grace Christenbery and Alex Kaufmann
 
 import processing.opengl.*;
-//abs pos stuff
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.io.IOException;
+import java.lang.Math;
 //
 int leapW = 16*50;
 int leapH = 9*50;
@@ -55,8 +50,7 @@ void draw() {
     text("Absolute positioning is " + sayText + ".",10,20+(1.25*fontSize));
   }
   oscLeapUpdate();
-  //--
-  //oscTest();
+  println("fps: " + frameRate);
 }
 
 
