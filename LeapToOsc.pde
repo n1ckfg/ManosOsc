@@ -1,5 +1,5 @@
-//LeapOscSend by Nick Fox-Gieg | fox-gieg.com
-//bits by Grace Christenbery and Alex Kaufmann
+//LeapToOsc by Nick Fox-Gieg | fox-gieg.com
+//with bits by Grace Christenbery and Alex Kaufmann
 
 import processing.opengl.*;
 import java.io.IOException;
