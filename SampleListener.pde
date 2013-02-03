@@ -24,13 +24,9 @@ class SampleListener extends Listener {
 void onFrame(com.leapmotion.leap.Controller controller) {
   //relative positioning based on LeapCircles by Grace Christenbery
   //println("Frame");
-  /*
-  //next three lines moved to OscLeap to make globals...
   com.leapmotion.leap.Frame frame = controller.frame();
   Screen screen = controller.calibratedScreens().get(0);
   com.leapmotion.leap.Vector bottomLeftCorner = screen.bottomLeftCorner();
-  */
-  frame = controller.frame();
    /*
     println("Frame id: " + frame.id()
    + ", timestamp: " + frame.timestamp()

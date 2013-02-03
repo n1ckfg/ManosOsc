@@ -12,9 +12,6 @@ NetAddress myRemoteLocation;
 
 SampleListener listener;
 Controller controller;
-Screen screen;
-com.leapmotion.leap.Vector bottomLeftCorner;
-com.leapmotion.leap.Frame frame;
 
 void oscSetup() {
   oscP5 = new OscP5(this, receivePort);
@@ -28,9 +25,6 @@ void oscLeapSetup() {
   listener = new SampleListener();
   controller = new Controller();
   controller.addListener(listener);
-  //calibrates screen for relative positioning
-  screen = controller.calibratedScreens().get(0);
-  bottomLeftCorner = screen.bottomLeftCorner();
   //~~~~~~~~~~~~~~~
   for (int i=0;i<hands.length;i++) {
     hands[i] = new OscHand();
