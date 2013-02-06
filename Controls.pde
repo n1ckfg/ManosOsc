@@ -12,4 +12,7 @@ void keyPressed(){
   if(key==' '){
     absPositioning = !absPositioning;
   }  
+  if(key=='s'||key=='S'){
+    oscLeapSetup();
+  }
 }

@@ -1,38 +1,28 @@
-import com.leapmotion.leap.*;
-
-//based on oscP5parsing by andreas schlegel
-import oscP5.*;
-import netP5.*;
-
-String ipNumber = "127.0.0.1";
-int sendPort = 7110;
-int receivePort = 33333;
-OscP5 oscP5;
-NetAddress myRemoteLocation;
-
-SampleListener listener;
-Controller controller;
-
 void oscSetup() {
   oscP5 = new OscP5(this, receivePort);
   myRemoteLocation = new NetAddress(ipNumber, sendPort);
 }
 
-OscHand[] hands = new OscHand[2];
-
 void oscLeapSetup() {
   oscSetup();
-  listener = new SampleListener();
-  controller = new Controller();
-  controller.addListener(listener);
-  //~~~~~~~~~~~~~~~
-  for (int i=0;i<hands.length;i++) {
-    hands[i] = new OscHand();
+  if(numberOfHands>0){
+    listener = new SampleListener();
+    controller = new Controller();
+    controller.addListener(listener);
+    for (int i=0;i<hands.length;i++) {
+      hands[i] = new OscHand();
+    }
+    //~~~~~~~~~~~~~~~
+  }else{
+    leap = new LeapMotionP5(this);
+    if(numberOfHands==0){
+       singleFinger = new OscSingleFinger();
+       singleTool = new OscSingleTool();
+     }
   }
 }
 
 void oscLeapUpdate() {
-  
   //stuff from Alex's
   /*
   try {
@@ -40,16 +30,82 @@ void oscLeapUpdate() {
   }catch (IOException e) {
     e.printStackTrace();
   }*/
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  for (int i=0;i<hands.length;i++) {
-      hands[i].run();
+  if(numberOfHands>0){
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    for (int i=0;i<hands.length;i++) {
+      try{
+        hands[i].run();
+      }catch(Exception e){ }
     }
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  }else{
+    try{
+      singleFingerToolHandler();
+    }catch(Exception e){ }
+  }
 }
+
+void singleFingerToolHandler(){
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  //single finger mode
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  try{
+    singleFinger.show = true;
+    singleTool.show = true;
+    
+    for (Map.Entry entry : leap.getFingerPositions().entrySet()) {
+      Integer fingerId = (Integer) entry.getKey();
+      Vector position = (Vector) entry.getValue();
+      singleFinger.p = getAnswer(position);
+      singleFinger.show = true;
+    }
+    
+    for (Map.Entry entry : leap.getToolPositions().entrySet()) {
+      Integer toolId = (Integer) entry.getKey();
+      Vector position = (Vector) entry.getValue();
+      singleTool.p = getAnswer(position);
+      singleTool.show = true;
+    }
+ 
+  singleFinger.run();
+  singleTool.run();
+  }catch(Exception e){ }
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+}
+
+PVector getAnswer(Vector position){
+  PVector answer = new PVector(0,0,0);
+  answer.x = leapToScreenX(position.getX());
+  answer.y = leapToScreenY(position.getY());
+  answer.z = position.get(2);
+  if(reverseZ){
+    answer.z *= -1;
+  }
+  return answer;
+}
+//~~~duplicated from SampleListener
+
+  float LEAP_WIDTH = leapH/2; //orig 200, in mm
+  float LEAP_HEIGHT = leapW/2;//orig 700, in mm 
+  
+float leapToScreenX(float x){
+  float c = width / 2.0;
+  if (x > 0.0)  {
+    return lerp(c, width, x/LEAP_WIDTH);
+  }else{
+    return lerp(c, 0.0, -x/LEAP_WIDTH);
+  }
+}
+
+float leapToScreenY(float y){
+  return lerp(height, 0.0, y/LEAP_HEIGHT);
+}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 void stop(){
   controller.removeListener(listener);
+  leap.stop();
+  super.stop();
 }
 
 //2D Hit Detect.  Assumes center.  x,y,w,h of object 1, x,y,w,h, of object 2.

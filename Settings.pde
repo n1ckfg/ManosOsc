@@ -7,7 +7,7 @@ class Settings {
       settings = new Data();
       settings.load(_s);
       for (int i=0;i<settings.data.length;i++) {
-        
+        if (settings.data[i].equals("Number of Hands")) numberOfHands = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
@@ -17,7 +17,6 @@ class Settings {
         if (settings.data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Absolute Positioning Mode")) absPositioning = setBoolean(settings.data[i+1]);
-        
        }
     } 
     catch(Exception e) {

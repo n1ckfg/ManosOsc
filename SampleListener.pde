@@ -2,7 +2,7 @@ class SampleListener extends Listener {
 
   float LEAP_WIDTH = leapH/2; //orig 200, in mm
   float LEAP_HEIGHT = leapW/2;//orig 700, in mm  
-  PVector p = new PVector(0,0,0);
+  //PVector p = new PVector(0,0,0);
   boolean verboseDebug = false;
   
   void onInit(Controller controller) {
@@ -22,6 +22,7 @@ class SampleListener extends Listener {
   }
 
 void onFrame(com.leapmotion.leap.Controller controller) {
+  if(numberOfHands > 0){
   //relative positioning based on LeapCircles by Grace Christenbery
   //println("Frame");
   com.leapmotion.leap.Frame frame = controller.frame();
@@ -36,12 +37,13 @@ void onFrame(com.leapmotion.leap.Controller controller) {
    */
 
   // Get the first hand
-  if(hands.length > 0){
   for (int i=0;i<hands.length;i++) {
+    
     int foo = 0; 
     try{
       foo = hands[0].fingerCount;
     }catch(Exception qq){ }
+    
     if(i==0 || i>0 && foo >0){ //crude way to check for two hands? throwing nullpointer errors
     try{
       hands[i].fingerCount = 0;
@@ -213,6 +215,7 @@ void onFrame(com.leapmotion.leap.Controller controller) {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~ abs pos tools from example
+
 float leapToScreenX(float x){
   float c = width / 2.0;
   if (x > 0.0)  {
