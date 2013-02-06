@@ -21,8 +21,7 @@ LeapMotionP5 leap;
 //--
 int numberOfHands = 2;
 OscHand[] hands = new OscHand[numberOfHands];
-OscSingleFinger singleFinger;
-OscSingleTool singleTool;
+OscSingle single;
 
 //--
 int leapW = 16*50;

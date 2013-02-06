@@ -16,8 +16,7 @@ void oscLeapSetup() {
   }else{
     leap = new LeapMotionP5(this);
     if(numberOfHands==0){
-       singleFinger = new OscSingleFinger();
-       singleTool = new OscSingleTool();
+       single = new OscSingle();
      }
   }
 }
@@ -40,36 +39,30 @@ void oscLeapUpdate() {
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~
   }else{
     try{
-      singleFingerToolHandler();
+      singleHandler();
     }catch(Exception e){ }
   }
 }
 
-void singleFingerToolHandler(){
+void singleHandler(){
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   //single finger mode
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  try{
-    singleFinger.show = true;
-    singleTool.show = true;
+    single.show = true;
     
     for (Map.Entry entry : leap.getFingerPositions().entrySet()) {
       Integer fingerId = (Integer) entry.getKey();
       Vector position = (Vector) entry.getValue();
-      singleFinger.p = getAnswer(position);
-      singleFinger.show = true;
+      single.p = getAnswer(position);
     }
     
     for (Map.Entry entry : leap.getToolPositions().entrySet()) {
       Integer toolId = (Integer) entry.getKey();
       Vector position = (Vector) entry.getValue();
-      singleTool.p = getAnswer(position);
-      singleTool.show = true;
+      single.p = getAnswer(position);
     }
  
-  singleFinger.run();
-  singleTool.run();
-  }catch(Exception e){ }
+  single.run();
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 }
 
