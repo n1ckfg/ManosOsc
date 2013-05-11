@@ -7,7 +7,8 @@ class Settings {
       settings = new Data();
       settings.load(_s);
       for (int i=0;i<settings.data.length;i++) {
-        if (settings.data[i].equals("Number of Hands")) numberOfHands = setInt(settings.data[i+1]);
+        if (settings.data[i].equals("Stage Width")) sW = setInt(settings.data[i+1]);
+        if (settings.data[i].equals("Stage Height")) sH = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
@@ -16,7 +17,12 @@ class Settings {
         if (settings.data[i].equals("Send Osc Active")) sendOsc = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Absolute Positioning Mode")) absPositioning = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Save Maya Python")) writeMaya = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Maya Offset Translate")) mayaOffsetTranslate = setPVector(settings.data[i+1]);
+        if (settings.data[i].equals("Maya Offset Scale")) mayaOffsetScale = setPVector(settings.data[i+1]);
+        if (settings.data[i].equals("Save After Effects JavaScript")) writeAE = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("After Effects Offset Translate")) AEoffsetTranslate = setPVector(settings.data[i+1]);
+        if (settings.data[i].equals("After Effects Offset Scale")) AEoffsetScale = setPVector(settings.data[i+1]);
        }
     } 
     catch(Exception e) {
@@ -115,5 +121,46 @@ class Settings {
     }
       return endColor;
   }
+  
+  PVector setPVector(String _s){
+    PVector endPVector = new PVector(0,0,0);
+    int commaCounter=0;
+    String sx = "";
+    String sy = "";
+    String sz = "";
+    float x = 0;
+    float y = 0;
+    float z = 0;
+
+    for (int i=0;i<_s.length();i++) {
+        if (_s.charAt(i)!=char(' ') && _s.charAt(i)!=char('(') && _s.charAt(i)!=char(')')) {
+          if (_s.charAt(i)==char(',')){
+            commaCounter++;
+          }else{
+          if (commaCounter==0) sx += _s.charAt(i);
+          if (commaCounter==1) sy += _s.charAt(i);
+          if (commaCounter==2) sz += _s.charAt(i); 
+         }
+       }
+     }
+
+    if (sx!="" && sy=="" && sz=="") {
+      x = float(sx);
+      endPVector = new PVector(x,0);
+    }
+    if (sx!="" && sy!="" && sz=="") {
+      x = float(sx);
+      y = float(sy);
+      endPVector = new PVector(x,y);
+    }
+    if (sx!="" && sy!="" && sz!="") {
+      x = float(sx);
+      y = float(sy);
+      z = float(sz);
+      endPVector = new PVector(x,y,z);
+    }
+      return endPVector;
+  }
+  
 }
 

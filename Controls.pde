@@ -1,18 +1,10 @@
-void keyPressed(){
-  if(keyCode==9){
-    debug = !debug;
-    if(!debug) background(0);
-  }
-  if(key=='t'||key=='T'){
-    showTraces = !showTraces;
-  }
-  if(key=='z'||key=='Z'){
-    reverseZ = !reverseZ;
-  }
-  if(key==' '){
-    absPositioning = !absPositioning;
-  }  
-  if(key=='r'||key=='R'){
-    oscLeapSetup();
-  }
+void keyPressed() {
+  if (key=='z' || key=='Z') reverseZ = !reverseZ;
+  if (key=='d' || key=='D') debug = !debug;
+  if (key=='t' || key=='T') showTraces = !showTraces;
+  if(key==' ' || keyCode==33 || keyCode==34){
+    record = !record;
+    firstRun = false;
+ }
 }
+

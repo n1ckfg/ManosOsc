@@ -1,5 +1,23 @@
-Number of Hands
-2
+Stage Width
+700
+
+Stage Height
+700
+
+Stage Depth
+1000
+
+Reverse Z Axis
+true
+
+Debug Display On
+true
+
+Show Traces
+true
+
+Time to Trace
+0.5
 
 Send Osc Active
 true
@@ -10,20 +28,22 @@ OSC Send IP Number
 OSC Send Port
 7110
 
-Stage Depth
-400
-
-Reverse Z Axis
+Save Maya Python
 true
 
-Absolute Positioning Mode
-false
+Maya Offset Translate
+(0,6,0)
 
-Debug Display On
+Maya Offset Scale
+(1,1,1)
+
+Save After Effects JavaScript
 true
 
-Show Traces
-true
+After Effects Offset Translate
+(0,0,0)
 
-Time to Trace
-0.5
+After Effects Offset Scale
+(1,1,1)
+
+
