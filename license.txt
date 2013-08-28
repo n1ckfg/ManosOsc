@@ -1,6 +1,7 @@
 LeapOscSend was developed with support from:
    Canada Council for the Arts
    Eyebeam Art + Technology Center
+   Ontario Arts Council / Chalmers Family Fund
 Copyright (c) 2013 Nick Fox-Gieg Animation
 http://fox-gieg.com
 
