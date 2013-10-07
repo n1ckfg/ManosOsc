@@ -7,9 +7,12 @@ class Settings {
       settings = new Data();
       settings.load(_s);
       for (int i=0;i<settings.data.length;i++) {
+        if (settings.data[i].equals("Open App Folder at Startup")) openAppFolder = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Show Splash Screen")) showSplashScreen = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Stage Width")) sW = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Stage Height")) sH = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
+        if (settings.data[i].equals("Font Size")) fontSize = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Show Traces")) showTraces = setBoolean(settings.data[i+1]);

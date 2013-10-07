@@ -1,3 +1,18 @@
+OSC Send IP Number
+127.0.0.1
+
+OSC Send Port
+7110
+
+Send Osc Active
+true
+
+Open App Folder at Startup
+false
+
+Show Splash Screen
+true
+
 Stage Width
 700
 
@@ -11,7 +26,7 @@ Reverse Z Axis
 true
 
 Debug Display On
-true
+false
 
 Show Traces
 true
@@ -19,31 +34,5 @@ true
 Time to Trace
 0.5
 
-Send Osc Active
-true
-
-OSC Send IP Number
-127.0.0.1
-
-OSC Send Port
-7110
-
-Save Maya Python
-true
-
-Maya Offset Translate
-(0,6,0)
-
-Maya Offset Scale
-(1,1,1)
-
-Save After Effects JavaScript
-true
-
-After Effects Offset Translate
-(0,0,0)
-
-After Effects Offset Scale
-(1,1,1)
-
-
+Font Size
+16

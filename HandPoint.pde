@@ -31,15 +31,16 @@ class HandPoint {
   }
 
   void update() {
-    if(record) handPath.add(p);
+    //if(record) handPath.add(p);
+    if(record||showTraces) handPath.add(p);
     if(sendOsc) sendHand();
   }
 
   void draw() {
-    if(debug){
+    //if(debug){
       drawDot(p, fgColor, ""+idHand);
       drawTraces(handPath, color(fgColor,100));
-    }
+    //}
   }
 
   void run() {

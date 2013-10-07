@@ -16,15 +16,16 @@ class PointablePoint{
   }
   
   void update(){
-    if(record) pointablePath.add(p);
+    //if(record) pointablePath.add(p);
+    if(record||showTraces) pointablePath.add(p);
     if(sendOsc) sendPointable();
   }
   
   void draw(){
-    if(debug){
+    //if(debug){
       drawDot(p, fgColor, idHand + "-" + idPointable);
       drawTraces(pointablePath, color(fgColor,100));
-    }
+    //}
   }
   
   void run(){
