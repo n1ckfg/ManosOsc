@@ -4,6 +4,9 @@ OSC Send IP Number
 OSC Send Port
 7110
 
+Center Coordinates
+false
+
 Send Osc Active
 true
 

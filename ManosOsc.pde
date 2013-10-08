@@ -27,6 +27,7 @@ PFont font;
 String fontFace = "assets/DroidSans-Bold-48.vlw";
 int fontSize = 16;
 color fontColor = color(255);
+boolean centerMode = false;
 
 String scriptsFilePath = "data";
 boolean record = false;
@@ -155,18 +156,18 @@ void draw() {
       "       ip: " + ipNumber +
       "       port: " + sendPort;
     //~~
-    sayText[2] = "channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + rounder(handPoints[0].p, "hand");
-    sayText[3] = "channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + rounder(handPoints[0].fingerPoints[0].p, "finger");
-    sayText[4] = "channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + rounder(handPoints[0].fingerPoints[1].p, "finger");
-    sayText[5] = "channel /finger0-2     [   (s) " + handPoints[0].fingerPoints[2].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[2].idPointable + rounder(handPoints[0].fingerPoints[2].p, "finger");
-    sayText[6] = "channel /finger0-3     [   (s) " + handPoints[0].fingerPoints[3].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[3].idPointable + rounder(handPoints[0].fingerPoints[3].p, "finger");
-    sayText[7] = "channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + rounder(handPoints[0].fingerPoints[4].p, "finger");
-    sayText[8] = "channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + rounder(handPoints[1].p, "hand");
-    sayText[9] = "channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + rounder(handPoints[1].fingerPoints[0].p, "finger");
-    sayText[10] = "channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + rounder(handPoints[1].fingerPoints[1].p, "finger");
-    sayText[11] = "channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + rounder(handPoints[1].fingerPoints[2].p, "finger");
-    sayText[12] = "channel /finger1-3     [   (s) " + handPoints[1].fingerPoints[3].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[3].idPointable + rounder(handPoints[1].fingerPoints[3].p, "finger");
-    sayText[13] = "channel /finger1-4     [   (s) " + handPoints[1].fingerPoints[4].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[4].idPointable + rounder(handPoints[1].fingerPoints[4].p, "finger");
+    sayText[2] = "channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
+    sayText[3] = "channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
+    sayText[4] = "channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + convertVals(handPoints[0].fingerPoints[1].p, "finger");
+    sayText[5] = "channel /finger0-2     [   (s) " + handPoints[0].fingerPoints[2].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[2].idPointable + convertVals(handPoints[0].fingerPoints[2].p, "finger");
+    sayText[6] = "channel /finger0-3     [   (s) " + handPoints[0].fingerPoints[3].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[3].idPointable + convertVals(handPoints[0].fingerPoints[3].p, "finger");
+    sayText[7] = "channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + convertVals(handPoints[0].fingerPoints[4].p, "finger");
+    sayText[8] = "channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + convertVals(handPoints[1].p, "hand");
+    sayText[9] = "channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + convertVals(handPoints[1].fingerPoints[0].p, "finger");
+    sayText[10] = "channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + convertVals(handPoints[1].fingerPoints[1].p, "finger");
+    sayText[11] = "channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + convertVals(handPoints[1].fingerPoints[2].p, "finger");
+    sayText[12] = "channel /finger1-3     [   (s) " + handPoints[1].fingerPoints[3].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[3].idPointable + convertVals(handPoints[1].fingerPoints[3].p, "finger");
+    sayText[13] = "channel /finger1-4     [   (s) " + handPoints[1].fingerPoints[4].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[4].idPointable + convertVals(handPoints[1].fingerPoints[4].p, "finger");
     //~~
     fill(fontColor);
     for (int i=0;i<sayText.length;i++) {
@@ -304,14 +305,28 @@ void writeAllKeys() {
   if (writeMaya) mayaKeysMain();  // Maya, Python
 }
 
-String rounder(PVector p, String t) {
+String convertVals(PVector p, String t) {
   String s = "";
   if (t=="hand") {
-    s = ",   (f) " + int(p.x) + ",   (f) " + int(p.y) + ",   (f) " + int(p.z) + "   ]";
-  }
-  else {
-    s = ",   (f) " + int(p.x) + ",   (f) " + int(p.y) + ",   (f) " + int(p.z) + "   ]";
+    if(centerMode){
+      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0,3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0,3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0,3) + "   ]";
+    }else{
+      s = ",   (f) " + rounder(p.x/sW,3) + ",   (f) " + rounder(p.y/sH,3) + ",   (f) " + rounder(p.z/sD,3) + "   ]";
+    }
+  } else {
+    if(centerMode){
+      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0,3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0,3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0,3) + "   ]";
+    }else{
+      s = ",   (f) " + rounder(p.x/sW,3) + ",   (f) " + rounder(p.y/sH,3) + ",   (f) " + rounder(p.z/sD,3) + "   ]";
+    }
   }
   return s;
+}
+
+float rounder(float _val, float _places){
+  _val *= pow(10,_places);
+  _val = round(_val);
+  _val /= pow(10,_places);
+  return _val;
 }
 

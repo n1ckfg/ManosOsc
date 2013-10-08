@@ -54,9 +54,15 @@ class HandPoint {
       myMessage = new OscMessage("/" + "hand" + idHand);
       myMessage.add(pointType);
       myMessage.add(idHand);
-      myMessage.add(p.x/sW);
-      myMessage.add(p.y/sH);
-      myMessage.add(p.z/sD);
+      if(centerMode){
+        myMessage.add((2.0*(p.x/sW))-1.0);
+        myMessage.add((2.0*(p.y/sH))-1.0);
+        myMessage.add((2.0*(p.z/sD))-1.0);
+      }else{
+        myMessage.add(p.x/sW);
+        myMessage.add(p.y/sH);
+        myMessage.add(p.z/sD);        
+      }
       oscP5.send(myMessage, myRemoteLocation);
     }catch(Exception e){ }
   }  
