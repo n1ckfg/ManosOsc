@@ -80,13 +80,16 @@ void setup() {
   if (openAppFolder) {
     openAppFolderHandler();
   }
+  if(doNetConnection) netConnection = checkNetConnection(1);
 }
 
 void draw() {
-  if(millis()>netCheckTime){
-    if(doNetConnection) netConnection = checkNetConnection(1);
-    netCheckTime += millis();
-  }
+  try{
+    if(millis()>netCheckTime){
+      if(doNetConnection) netConnection = checkNetConnection(1);
+      netCheckTime += millis();
+    }
+  }catch(Exception e){ }
   if (showSplashScreen & millis()<splashScreenTime*1000) {
     imageMode(CORNER);
     try {
