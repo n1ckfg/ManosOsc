@@ -1,0 +1,3 @@
+ -Xms64m -Xmx512m
+ReceiveExample
+oscP5.jar,ReceiveExample.jar,core.jar,gluegen-rt.jar,jogl.jar,opengl.jar,oscP5.jar

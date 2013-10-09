@@ -10,7 +10,7 @@ ManosOsc outputs OSC from the Leap controller, tracking the coordinates of your 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 II.  CONTROLS
-* (D)ebug: Press the D key to toggle a detailed display of the OSC data that ManosOsc is sending. Defaults to OFF.
+* (D)ebug: Press the D key to toggle a detailed display of the OSC data that ManosOsc is sending. Defaults to ON.
 
 * (Z) reverse: Press the Z key to toggle mirrored tracking--when you move your hand toward the screen, the tracked points move toward you. Defaults to ON.
 

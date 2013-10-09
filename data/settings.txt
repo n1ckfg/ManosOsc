@@ -10,6 +10,9 @@ false
 Send Osc Active
 true
 
+Check for Net Connection
+true
+
 Open App Folder at Startup
 false
 
@@ -29,7 +32,7 @@ Reverse Z Axis
 true
 
 Debug Display On
-false
+true
 
 Show Traces
 true

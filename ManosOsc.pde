@@ -5,6 +5,7 @@ import processing.opengl.*;
 import com.onformative.leap.LeapMotionP5;
 import com.leapmotion.leap.*;
 import java.awt.Desktop;
+import java.net.InetAddress;
 
 LeapMotionP5 leap;
 
@@ -28,6 +29,10 @@ String fontFace = "assets/DroidSans-Bold-48.vlw";
 int fontSize = 16;
 color fontColor = color(255);
 boolean centerMode = false;
+boolean leapConnection = false;
+boolean netConnection = false;
+boolean doNetConnection = false;
+int netCheckTime = 2000;
 
 String scriptsFilePath = "data";
 boolean record = false;
@@ -78,6 +83,10 @@ void setup() {
 }
 
 void draw() {
+  if(millis()>netCheckTime){
+    if(doNetConnection) netConnection = checkNetConnection(1);
+    netCheckTime += millis();
+  }
   if (showSplashScreen & millis()<splashScreenTime*1000) {
     imageMode(CORNER);
     try {
@@ -152,9 +161,18 @@ void draw() {
       "   |   (T)races: " + setOnOff(showTraces) + 
       "   |   (O)sc: " + setOnOff(sendOsc) + 
       "   |   (F)older "; //"(SPACE) to record" + 
-    sayText[1] = "fps: " + int(frameRate) + 
-      "       ip: " + ipNumber +
-      "       port: " + sendPort;
+    if(doNetConnection){
+      sayText[1] = "fps: " + int(frameRate) + 
+        "       ip: " + ipNumber +
+        "       port: " + sendPort + 
+        "       net: " + setYesNo(netConnection) +
+        "       leap: " + setYesNo(leapConnection);
+    }else{
+      sayText[1] = "fps: " + int(frameRate) + 
+        "       ip: " + ipNumber +
+        "       port: " + sendPort + 
+        "       leap: " + setYesNo(leapConnection);    
+    }
     //~~
     sayText[2] = "channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
     sayText[3] = "channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
@@ -198,6 +216,17 @@ String setOnOff(boolean _b) {
   }
   else {
     s = "OFF";
+  }
+  return s;
+}
+
+String setYesNo(boolean _b) {
+  String s;
+  if (_b) {
+    s = "YES";
+  }
+  else {
+    s = "NO";
   }
   return s;
 }
@@ -330,3 +359,23 @@ float rounder(float _val, float _places){
   return _val;
 }
 
+boolean checkNetConnection(int _t){
+  boolean answer = false;
+  try{
+    int timeout = _t; //duration over which to retry
+    InetAddress[] addresses = InetAddress.getAllByName("google.com");
+    for (InetAddress address : addresses) {
+      if (address.isReachable(timeout)){
+        answer = true;
+        //println("Internet connection, and " + address + " is reachable.");
+      }else{
+        answer = true;
+        //println("Internet connection, but " + address + " is not reachable.");
+      }
+    }
+  }catch (Exception e) {
+    answer = false;
+    //println("No internet connection.");
+  }
+  return answer;
+}

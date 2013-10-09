@@ -81,10 +81,12 @@ class LeapMotionListener extends Listener {
   }
 
   public void onConnect(Controller controller) {
+    leapConnection = true;
     System.out.println("Leap Motion Connected");
   }
 
   public void onDisconnect(Controller controller) {
+    leapConnection=false;
     System.out.println("Leap Motion Disconnected");
   }
 
