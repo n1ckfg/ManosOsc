@@ -32,7 +32,9 @@ boolean centerMode = false;
 boolean leapConnection = false;
 boolean netConnection = false;
 boolean doNetConnection = false;
-int netCheckTime = 2000;
+int netCheckCounter = 0;
+int netCheckInterval = 2000;
+int netCheckTimeout = 1;
 
 String scriptsFilePath = "data";
 boolean record = false;
@@ -80,14 +82,16 @@ void setup() {
   if (openAppFolder) {
     openAppFolderHandler();
   }
-  if(doNetConnection) netConnection = checkNetConnection(1);
+  if(doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
 }
 
 void draw() {
   try{
-    if(millis()>netCheckTime){
-      if(doNetConnection) netConnection = checkNetConnection(1);
-      netCheckTime += millis();
+    if(counter<netCheckInterval){
+      if(doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
+      counter++;
+    }else{
+      counter=0;
     }
   }catch(Exception e){ }
   if (showSplashScreen & millis()<splashScreenTime*1000) {
@@ -366,7 +370,7 @@ boolean checkNetConnection(int _t){
   boolean answer = false;
   try{
     int timeout = _t; //duration over which to retry
-    InetAddress[] addresses = InetAddress.getAllByName("google.com");
+    InetAddress[] addresses = InetAddress.getAllByName("leapmotion.com");
     for (InetAddress address : addresses) {
       if (address.isReachable(timeout)){
         answer = true;
