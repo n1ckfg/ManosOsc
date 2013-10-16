@@ -5,6 +5,7 @@ class PointablePoint{
   int idHand = 0;
   color fgColor = color(255);
   String pointType = "pointable";
+  //boolean active = false;
 
   PointablePoint(int _ip, int _ih, PVector _p, color _c, String _s){
     idPointable = _ip;

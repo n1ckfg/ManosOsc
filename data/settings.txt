@@ -28,6 +28,9 @@ Stage Height
 Stage Depth
 1000
 
+Framerate
+60
+
 Reverse Z Axis
 true
 

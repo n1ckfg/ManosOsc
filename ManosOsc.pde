@@ -1,7 +1,6 @@
 //ManosOsc by Nick Fox-Gieg  |  fox-gieg.com
 //thanks to Liubo Borissov, Grace Christenbery, Alex Kaufmann, Victoria Nece, Marcel Schwittlick
 
-import processing.opengl.*;
 import com.onformative.leap.LeapMotionP5;
 import com.leapmotion.leap.*;
 import java.awt.Desktop;
@@ -35,6 +34,7 @@ boolean doNetConnection = false;
 int netCheckCounter = 0;
 int netCheckInterval = 2000;
 int netCheckTimeout = 1;
+boolean fullScreen = false;
 
 String scriptsFilePath = "data";
 boolean record = false;
@@ -54,19 +54,22 @@ PVector pStart = new PVector(0, 0, 0);
 
 void setup() {
   Settings settings = new Settings("settings.txt");
-  size(sW, sH, OPENGL);
+  size(sW,sH, P3D);
   frameRate(fps);
   leap = new LeapMotionP5(this);
-  if(System.getProperty("os.name").equals("Mac OS X")){
+  if (System.getProperty("os.name").equals("Mac OS X")) {
     try {
       font = loadFont(fontFace);
-    }catch(Exception e) {
+    }
+    catch(Exception e) {
       font = createFont("Arial", 2*fontSize);
     }
-  }else{
+  }
+  else {
     try {
       font = loadFont(fontFace);
-    }catch(Exception e) {
+    }
+    catch(Exception e) {
       font = createFont("Arial", 2*fontSize);
     }
   }
@@ -82,18 +85,21 @@ void setup() {
   if (openAppFolder) {
     openAppFolderHandler();
   }
-  if(doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
+  if (doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
 }
 
 void draw() {
-  try{
-    if(counter<netCheckInterval){
-      if(doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
+  try {
+    if (counter<netCheckInterval) {
+      if (doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
       counter++;
-    }else{
+    }
+    else {
       counter=0;
     }
-  }catch(Exception e){ }
+  }
+  catch(Exception e) {
+  }
   if (showSplashScreen & millis()<splashScreenTime*1000) {
     imageMode(CORNER);
     try {
@@ -168,17 +174,18 @@ void draw() {
       "   |   (T)races: " + setOnOff(showTraces) + 
       "   |   (O)sc: " + setOnOff(sendOsc) + 
       "   |   (F)older "; //"(SPACE) to record" + 
-    if(doNetConnection){
+    if (doNetConnection) {
       sayText[1] = "fps: " + int(frameRate) + 
         "       ip: " + ipNumber +
         "       port: " + sendPort + 
         "       net: " + setYesNo(netConnection) +
         "       leap: " + setYesNo(leapConnection);
-    }else{
+    }
+    else {
       sayText[1] = "fps: " + int(frameRate) + 
         "       ip: " + ipNumber +
         "       port: " + sendPort + 
-        "       leap: " + setYesNo(leapConnection);    
+        "       leap: " + setYesNo(leapConnection);
     }
     //~~
     sayText[2] = "channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
@@ -216,6 +223,11 @@ void draw() {
   //oscTester();
 }
 
+//not reading correctly from settings
+boolean sketchFullScreen() {
+  return fullScreen;
+}
+  
 String setOnOff(boolean _b) {
   String s;
   if (_b) {
@@ -344,45 +356,51 @@ void writeAllKeys() {
 String convertVals(PVector p, String t) {
   String s = "";
   if (t=="hand") {
-    if(centerMode){
-      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0,3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0,3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0,3) + "   ]";
-    }else{
-      s = ",   (f) " + rounder(p.x/sW,3) + ",   (f) " + rounder(p.y/sH,3) + ",   (f) " + rounder(p.z/sD,3) + "   ]";
+    if (centerMode) {
+      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0, 3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0, 3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0, 3) + "   ]";
     }
-  } else {
-    if(centerMode){
-      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0,3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0,3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0,3) + "   ]";
-    }else{
-      s = ",   (f) " + rounder(p.x/sW,3) + ",   (f) " + rounder(p.y/sH,3) + ",   (f) " + rounder(p.z/sD,3) + "   ]";
+    else {
+      s = ",   (f) " + rounder(p.x/sW, 3) + ",   (f) " + rounder(p.y/sH, 3) + ",   (f) " + rounder(p.z/sD, 3) + "   ]";
+    }
+  } 
+  else {
+    if (centerMode) {
+      s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0, 3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0, 3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0, 3) + "   ]";
+    }
+    else {
+      s = ",   (f) " + rounder(p.x/sW, 3) + ",   (f) " + rounder(p.y/sH, 3) + ",   (f) " + rounder(p.z/sD, 3) + "   ]";
     }
   }
   return s;
 }
 
-float rounder(float _val, float _places){
-  _val *= pow(10,_places);
+float rounder(float _val, float _places) {
+  _val *= pow(10, _places);
   _val = round(_val);
-  _val /= pow(10,_places);
+  _val /= pow(10, _places);
   return _val;
 }
 
-boolean checkNetConnection(int _t){
+boolean checkNetConnection(int _t) {
   boolean answer = false;
-  try{
+  try {
     int timeout = _t; //duration over which to retry
     InetAddress[] addresses = InetAddress.getAllByName("leapmotion.com");
     for (InetAddress address : addresses) {
-      if (address.isReachable(timeout)){
+      if (address.isReachable(timeout)) {
         answer = true;
         //println("Internet connection, and " + address + " is reachable.");
-      }else{
+      }
+      else {
         answer = true;
         //println("Internet connection, but " + address + " is not reachable.");
       }
     }
-  }catch (Exception e) {
+  }
+  catch (Exception e) {
     answer = false;
     //println("No internet connection.");
   }
   return answer;
 }
+

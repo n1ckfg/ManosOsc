@@ -6,6 +6,7 @@ class HandPoint {
   int idHand = 0;
   color fgColor = color(0, 0, 255);
   String pointType = "hand";
+  //boolean active = false;
 
   PointablePoint[] fingerPoints = new PointablePoint[numFingers];
   PointablePoint[] toolPoints = new PointablePoint[numTools];

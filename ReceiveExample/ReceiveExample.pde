@@ -11,17 +11,23 @@ int fps = 60;
 float ease = 10;
 
 void setup(){
+  hint( ENABLE_OPENGL_4X_SMOOTH );
   Settings settings = new Settings("settings.txt");
-  size(sW,sH,OPENGL);
+  size(sW,sH,GLConstants.GLGRAPHICS);
   oscSetup();
   frameRate(fps);
   background(0);
   for (int i=0;i<hands.length;i++) {
     hands[i] = new OscHand();
   }
+  setupGl();
 }
 
 void draw(){
+  drawGl();
+}
+
+void drawMain(){
   background(0);
 
   for (int i=0;i<hands.length;i++) {
