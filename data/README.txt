@@ -10,13 +10,13 @@ ManosOsc outputs OSC from the Leap controller, tracking the coordinates of your 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 II.  CONTROLS
-* (D)ebug: Press the D key to toggle a detailed display of the OSC data that ManosOsc is sending. Defaults to ON.
+* (D)ebug: Press the D key once to toggle a detailed display of the OSC data that ManosOsc is sending. Press it twice to show MIDI data. Defaults to ON.
 
 * (Z) reverse: Press the Z key to toggle mirrored tracking--when you move your hand toward the screen, the tracked points move toward you. Defaults to ON.
 
-* (T)races: Press the T key to toggle trails of previous hand and finger positions. Defaults to ON.
-
 * (O)sc: Press the O key to toggle sending OSC data. Defaults to ON.
+
+* (M)idi: Press the M key to toggle sending MIDI data. Defaults to ON.
 
 * (F)older: Opens the app folder in your OS X Finder or Windows Explorer.
 
@@ -61,6 +61,25 @@ To take advantage of the app's OSC output, you'll need to send this information 
 Two free examples for both Mac and Windows are:
 PureData: http://puredata.info/
 Processing: http://processing.org/
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+IV.  MIDI (Musical Instrument Digital Interface)
+
+If you're working with sound and music apps like Ableton Live, you might find MIDI easier to use. (Be aware, however, that it's much less precise than OSC.) Each point has a MIDI controller assigned to its x, y, and z axis:
+
+hand0       1,2,3
+finger0-0   4,5,6
+finger0-1   7,8,9
+finger0-2   10,11,12
+finger0-3   13,14,15
+finger0-4   16,17,18
+hand1       19,20,21
+finger1-0   22,23,24
+finger1-1   25,26,27
+finger1-2   28,29,30
+finger1-3   31,32,33
+finger1-4   34,35,36
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

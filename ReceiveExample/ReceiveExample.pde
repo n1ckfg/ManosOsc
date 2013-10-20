@@ -13,6 +13,12 @@ float ease = 10;
 void setup(){
   hint( ENABLE_OPENGL_4X_SMOOTH );
   Settings settings = new Settings("settings.txt");
+  //~~
+  sW = screenWidth;
+  sH = screenHeight;
+  sD = int(0.5 * (sW + sH));
+  noCursor();
+  //~~
   size(sW,sH,GLConstants.GLGRAPHICS);
   oscSetup();
   frameRate(fps);

@@ -1,12 +1,3 @@
-Stage Width
-1280
-
-Stage Height
-720
-
-Stage Depth
-1000
-
 Framerate
 60
 

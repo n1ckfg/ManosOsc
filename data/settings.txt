@@ -7,7 +7,10 @@ OSC Send Port
 Center Coordinates
 false
 
-Send Osc Active
+Send OSC Active
+true
+
+Send MIDI Active
 true
 
 Check for Net Connection

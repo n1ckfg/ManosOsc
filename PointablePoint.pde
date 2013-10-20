@@ -19,7 +19,8 @@ class PointablePoint{
   void update(){
     //if(record) pointablePath.add(p);
     if(record||showTraces) pointablePath.add(p);
-    if(sendOsc) sendPointable();
+    if(sendOsc) sendPointableOsc();
+    if(sendMidi) sendPointableMidi();
   }
   
   void draw(){
@@ -34,7 +35,7 @@ class PointablePoint{
     draw();
   }
   
-  void sendPointable() {
+  void sendPointableOsc() {
     OscMessage myMessage;
     try{
       myMessage = new OscMessage("/" + "finger" + idHand + "-" + idPointable);
@@ -52,6 +53,50 @@ class PointablePoint{
       }
       oscP5.send(myMessage, myRemoteLocation);
     }catch(Exception e){ }
+  }  
+  
+  void sendPointableMidi(){
+    try{
+      int a=0;
+      int b=0;
+      int c=0;
+      if(idPointable==0){
+        a = 4;
+        b = 5;
+        c = 6;
+      }else if(idPointable==1){
+        a = 7;
+        b = 8;
+        c = 9;
+      }else if(idPointable==2){
+        a = 10;
+        b = 11;
+        c = 12;
+      }else if(idPointable==3){
+        a = 13;
+        b = 14;
+        c = 15;
+      }else if(idPointable==4){
+        a = 16;
+        b = 17;
+        c = 18;
+      }
+      sendCtl(getMidiId(a),getMidiVal(p.x,sW));
+      sendCtl(getMidiId(b),getMidiVal(p.y,sH));
+      sendCtl(getMidiId(c),getMidiVal(p.z,sD));      
+    }catch(Exception e){ }
+  }
+  
+  int getMidiId(int id){
+    int returns = int((idHand*18)+id);
+    return returns;
+  }
+  
+  int getMidiVal(float _x, float _sw){
+    int returns = int((_x/_sw)*127.0);
+    if(returns<0) returns = 0;
+    if(returns>127) returns = 127;
+    return returns;
   }  
 
 }

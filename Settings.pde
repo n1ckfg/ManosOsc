@@ -21,7 +21,8 @@ class Settings {
         if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Show Traces")) showTraces = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Time to Trace")) timeToTrace = setFloat(settings.data[i+1]);
-        if (settings.data[i].equals("Send Osc Active")) sendOsc = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Send MIDI Active")) sendMidi = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Send OSC Active")) sendOsc = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Save Maya Python")) writeMaya = setBoolean(settings.data[i+1]);

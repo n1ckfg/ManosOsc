@@ -34,7 +34,8 @@ class HandPoint {
   void update() {
     //if(record) handPath.add(p);
     if(record||showTraces) handPath.add(p);
-    if(sendOsc) sendHand();
+    if(sendOsc) sendHandOsc();
+    if(sendMidi) sendHandMidi();
   }
 
   void draw() {
@@ -49,7 +50,7 @@ class HandPoint {
     draw();
   }
   
-  void sendHand() {
+  void sendHandOsc() {
     OscMessage myMessage;
     try{
       myMessage = new OscMessage("/" + "hand" + idHand);
@@ -68,5 +69,24 @@ class HandPoint {
     }catch(Exception e){ }
   }  
 
+  void sendHandMidi(){
+    try{
+      sendCtl(getMidiId(1),getMidiVal(p.x,sW));
+      sendCtl(getMidiId(2),getMidiVal(p.y,sH));
+      sendCtl(getMidiId(3),getMidiVal(p.z,sD));      
+    }catch(Exception e){ }
+  }
+  
+  int getMidiId(int id){
+    int returns = int((idHand*18)+id);
+    return returns;
+  }
+  
+  int getMidiVal(float _x, float _sw){
+    int returns = int((_x/_sw)*127.0);
+    if(returns<0) returns = 0;
+    if(returns>127) returns = 127;
+    return returns;
+  }
 }
 

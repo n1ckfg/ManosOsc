@@ -1,8 +1,22 @@
 void keyPressed() {
   if (key=='z' || key=='Z') reverseZ = !reverseZ;
-  if (key=='d' || key=='D') debug = !debug;
+  if (key=='d' || key=='D'){
+    if(debug && !debugDisplayMidi){
+      debugDisplayMidi = true;
+    }else{
+      debugDisplayMidi = false;
+      debug = !debug;
+    }
+  }
   if (key=='t' || key=='T') showTraces = !showTraces;
-  if (key=='o' || key=='O') sendOsc = !sendOsc;
+  if (key=='m' || key=='M'){
+    sendMidi = !sendMidi;
+    //if(sendMidi) debugDisplayMidi = true;
+  }
+  if (key=='o' || key=='O'){
+    sendOsc = !sendOsc;
+    //if(sendOsc) debugDisplayMidi = false;
+  }
   if (key=='f' || key=='F') openAppFolderHandler();
   /*
   if(key==' ' || keyCode==33 || keyCode==34){
