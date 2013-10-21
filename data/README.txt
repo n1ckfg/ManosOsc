@@ -33,6 +33,13 @@ To connect two devices over OSC, both of them need to agree on three things:
 
 3. An arbitrary channel name for each stream of data--for example, each axis of a controller. 
 
+The OSC port and destination IP address can be changed by editing the settings.txt file in the app directory.
+
+To take advantage of the app's OSC output, you'll need to send this information to a program that speaks OSC. 
+Two free examples for both Mac and Windows are:
+PureData: http://puredata.info/
+Processing: http://processing.org/
+
 * Hand channels:
 contents: 
 string (name), int (hand id), float (x), float (y), float (z)   
@@ -57,16 +64,19 @@ names:
 /finger1-3
 /finger1-4
 
-To take advantage of the app's OSC output, you'll need to send this information to a program that speaks OSC. 
-Two free examples for both Mac and Windows are:
-PureData: http://puredata.info/
-Processing: http://processing.org/
-
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 IV.  MIDI (Musical Instrument Digital Interface)
 
-If you're working with sound and music apps like Ableton Live, you might find MIDI easier to use. (Be aware, however, that it's much less precise than OSC.) Each point has a MIDI controller assigned to its x, y, and z axis:
+If you're working with sound and music apps like Ableton Live, you might find MIDI easier to use. (Be aware, however, that it's much less precise than OSC.) 
+
+The MIDI port and channel can be changed by editing the settings.txt file in the app directory.
+
+The ability to route MIDI between applications and over a network is built into OS X, but Windows will need a third-party driver. Two free examples are:
+Midi-Yoke: http://www.midiox.com/myoke.htm
+rtpMIDI: http://www.tobias-erichsen.de/software/rtpmidi.html
+
+* Each tracking point has a MIDI controller assigned to its x, y, and z axis:
 
 hand0       1,2,3
 finger0-0   4,5,6

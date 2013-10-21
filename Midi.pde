@@ -3,11 +3,20 @@ import promidi.*;
 MidiIO midiIO;
 MidiOut midiOut;
 
+int midiChannelNum = 0;
+int midiPortNum = 0;
+
 //setup function
 void midiSetup(){
   midiIO = MidiIO.getInstance(this);
   midiIO.printDevices();
-  midiOut = midiIO.getMidiOut(0,0);
+  try{
+    midiOut = midiIO.getMidiOut(midiChannelNum,midiPortNum); //channel, port
+  }catch(Exception e){
+    try{
+      midiOut = midiIO.getMidiOut(0,0); //channel, port
+    }catch(Exception ee){ }
+  }
 }
 
 void sendCtl(int ch, int val){

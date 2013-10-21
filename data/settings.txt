@@ -4,17 +4,23 @@ OSC Send IP Number
 OSC Send Port
 7110
 
-Center Coordinates
-false
-
 Send OSC Active
 true
+
+MIDI Send Channel
+0
+
+MIDI Send Port
+0
 
 Send MIDI Active
 true
 
 Check for Net Connection
 true
+
+Center Coordinates
+false
 
 Open App Folder at Startup
 false
