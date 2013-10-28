@@ -19,3 +19,17 @@ void oscTester(){
   myMessage.add(testData);
   oscP5.send(myMessage, myRemoteLocation); 
 }
+
+void sendActiveOsc() {
+  OscMessage myMessage;
+  try{
+    //myMessage = new OscMessage("/" + "finger" + idHand + "-" + idPointable);
+    myMessage = new OscMessage("/active");
+    myMessage.add(activeHands);
+    myMessage.add(activeFingers);
+    myMessage.add(activeTools);
+    myMessage.add(activeOrigins);
+    oscP5.send(myMessage, myRemoteLocation);
+  }catch(Exception e){ }
+  //println("Active hands: " + activeHands + "   fingers: " + activeFingers + "   tools: " + activeTools + "   origins: " + activeOrigins);
+} 

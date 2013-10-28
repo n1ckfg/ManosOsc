@@ -23,7 +23,7 @@ boolean showTraces = true;
 float timeToTrace = 0.5;
 boolean sendOsc = true;
 boolean sendMidi = true;
-String[] sayText = new String[16];
+String[] sayText = new String[19];
 PFont font;
 String fontFace = "assets/DroidSans-Bold-48.vlw";
 int fontSize = 16;
@@ -37,6 +37,12 @@ int netCheckInterval = 2000;
 int netCheckTimeout = 1;
 boolean fullScreen = false;
 boolean debugDisplayMidi = false;
+String oscFormat = "Legacy";
+
+int activeHands = 0;
+int activeFingers = 0;
+int activeOrigins = 0;
+int activeTools = 0;
 
 String scriptsFilePath = "data";
 boolean record = false;
@@ -92,6 +98,7 @@ void setup() {
 }
 
 void draw() {
+  resetActiveCount(); //going to check how many hands, fingers, origins, tools have changed since previous frame
   try {
     if (counter<netCheckInterval) {
       if (doNetConnection) netConnection = checkNetConnection(netCheckTimeout);
@@ -125,8 +132,10 @@ void draw() {
       int toolCounter = 0;
       int originCounter = 0;
       try {
+        handPoints[handCounter].pp = handPoints[handCounter].p;
         handPoints[handCounter].p = getPos(leap.getPosition(hand));
         handPoints[handCounter].run();
+        if(handPoints[handCounter].active) activeHands++;
       }
       catch(Exception e) {
       }
@@ -134,9 +143,11 @@ void draw() {
       //origins on a hand
       for (Pointable pointable : leap.getPointableList(hand)) {
         try {
+          handPoints[handCounter].originPoints[originCounter].pp = handPoints[handCounter].originPoints[originCounter].p;
           handPoints[handCounter].originPoints[originCounter].p = getPos(leap.getOrigin(pointable));
           handPoints[handCounter].originPoints[originCounter].run();
           drawConnect(handPoints[handCounter].p, handPoints[handCounter].originPoints[originCounter].p);
+          if(handPoints[handCounter].originPoints[originCounter].active) activeOrigins++;
           originCounter++;
         }
         catch(Exception e) {
@@ -146,9 +157,11 @@ void draw() {
       //fingers on a hand
       for (Finger finger : leap.getFingerList(hand)) {
         try {
+          handPoints[handCounter].fingerPoints[fingerCounter].pp = handPoints[handCounter].fingerPoints[fingerCounter].p;
           handPoints[handCounter].fingerPoints[fingerCounter].p = getPos(leap.getTip(finger));
           handPoints[handCounter].fingerPoints[fingerCounter].run();
           drawConnect(handPoints[handCounter].originPoints[fingerCounter].p, handPoints[handCounter].fingerPoints[fingerCounter].p);
+          if(handPoints[handCounter].fingerPoints[fingerCounter].active) activeFingers++;
           fingerCounter++;
         }
         catch(Exception e) {
@@ -158,9 +171,11 @@ void draw() {
       //tools on a hand
       for (Tool tool : leap.getToolList(hand)) {
         try {
+          handPoints[handCounter].toolPoints[toolCounter].pp = handPoints[handCounter].toolPoints[toolCounter].p;
           handPoints[handCounter].toolPoints[toolCounter].p = getPos(leap.getTip(tool));
           handPoints[handCounter].toolPoints[toolCounter].run();
           drawConnect(handPoints[handCounter].originPoints[toolCounter].p, handPoints[handCounter].toolPoints[toolCounter].p);
+          if(handPoints[handCounter].toolPoints[toolCounter].active) activeTools++;
           toolCounter++;
         }
         catch(Exception e) {
@@ -178,35 +193,42 @@ void draw() {
       "   |   (M)idi: " + setOnOff(sendMidi) + 
       "   |   (F)older "; //"(SPACE) to record" + 
     if(!debugDisplayMidi){
-      sayText[1] = "osc ip: " + ipNumber +
+      sayText[2] = "osc ip: " + ipNumber +
           "       osc port: " + sendPort;
     }else{
-      sayText[1] = "midi channel: " + midiChannelNum + 
+      sayText[2] = "midi channel: " + midiChannelNum + 
           "       midi port: " + midiPortNum;
     }
     if (doNetConnection) {
-      sayText[2] = "fps: " + int(frameRate) + 
+      sayText[1] = "fps: " + int(frameRate) + 
         "       net: " + setYesNo(netConnection) +
         "       leap: " + setYesNo(leapConnection);
     }else {
-      sayText[2] = "fps: " + int(frameRate) + 
+      sayText[1] = "fps: " + int(frameRate) + 
         "       leap: " + setYesNo(leapConnection);
     }
     sayText[3] = "";
     //~~
     if(!debugDisplayMidi){
-      sayText[4] = "osc channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
-      sayText[5] = "osc channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
-      sayText[6] = "osc channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + convertVals(handPoints[0].fingerPoints[1].p, "finger");
-      sayText[7] = "osc channel /finger0-2     [   (s) " + handPoints[0].fingerPoints[2].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[2].idPointable + convertVals(handPoints[0].fingerPoints[2].p, "finger");
-      sayText[8] = "osc channel /finger0-3     [   (s) " + handPoints[0].fingerPoints[3].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[3].idPointable + convertVals(handPoints[0].fingerPoints[3].p, "finger");
-      sayText[9] = "osc channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + convertVals(handPoints[0].fingerPoints[4].p, "finger");
-      sayText[10] = "osc channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + convertVals(handPoints[1].p, "hand");
-      sayText[11] = "osc channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + convertVals(handPoints[1].fingerPoints[0].p, "finger");
-      sayText[12] = "osc channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + convertVals(handPoints[1].fingerPoints[1].p, "finger");
-      sayText[13] = "osc channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + convertVals(handPoints[1].fingerPoints[2].p, "finger");
-      sayText[14] = "osc channel /finger1-3     [   (s) " + handPoints[1].fingerPoints[3].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[3].idPointable + convertVals(handPoints[1].fingerPoints[3].p, "finger");
-      sayText[15] = "osc channel /finger1-4     [   (s) " + handPoints[1].fingerPoints[4].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[4].idPointable + convertVals(handPoints[1].fingerPoints[4].p, "finger");
+      if(oscFormat.equals("Animata")){
+        //
+      }else{
+        sayText[4] = "osc channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
+        sayText[5] = "osc channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
+        sayText[6] = "osc channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + convertVals(handPoints[0].fingerPoints[1].p, "finger");
+        sayText[7] = "osc channel /finger0-2     [   (s) " + handPoints[0].fingerPoints[2].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[2].idPointable + convertVals(handPoints[0].fingerPoints[2].p, "finger");
+        sayText[8] = "osc channel /finger0-3     [   (s) " + handPoints[0].fingerPoints[3].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[3].idPointable + convertVals(handPoints[0].fingerPoints[3].p, "finger");
+        sayText[9] = "osc channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + convertVals(handPoints[0].fingerPoints[4].p, "finger");
+        sayText[10]="";
+        sayText[11] = "osc channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + convertVals(handPoints[1].p, "hand");
+        sayText[12] = "osc channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + convertVals(handPoints[1].fingerPoints[0].p, "finger");
+        sayText[13] = "osc channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + convertVals(handPoints[1].fingerPoints[1].p, "finger");
+        sayText[14] = "osc channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + convertVals(handPoints[1].fingerPoints[2].p, "finger");
+        sayText[15] = "osc channel /finger1-3     [   (s) " + handPoints[1].fingerPoints[3].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[3].idPointable + convertVals(handPoints[1].fingerPoints[3].p, "finger");
+        sayText[16] = "osc channel /finger1-4     [   (s) " + handPoints[1].fingerPoints[4].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[4].idPointable + convertVals(handPoints[1].fingerPoints[4].p, "finger");
+        sayText[17] = "";
+        sayText[18] = "osc channel /active     [   (i) " + activeHands+ ",   (i) " + activeFingers + ",   (i) " + activeTools + ",   (i) " + activeOrigins + "   ]";
+      }
     }else{
       sayText[4] = "midi controllers hand0     [   (" + handPoints[0].getMidiId(1) + ") " + handPoints[0].getMidiVal(handPoints[0].p.x,sW) + ",   (" + handPoints[0].getMidiId(2) + ") " + handPoints[0].getMidiVal(handPoints[0].p.y,sH) + ",   (" + handPoints[0].getMidiId(3) + ") " + handPoints[0].getMidiVal(handPoints[0].p.z,sD) + "   ]";
       sayText[5] = "midi controllers finger0-0     [   (" + handPoints[0].fingerPoints[0].getMidiId(4) + ") " + handPoints[0].fingerPoints[0].getMidiVal(handPoints[0].fingerPoints[0].p.x,sW) + ",   (" + handPoints[0].fingerPoints[0].getMidiId(5) + ") " + handPoints[0].fingerPoints[0].getMidiVal(handPoints[0].fingerPoints[0].p.y,sH) + ",   (" + handPoints[0].fingerPoints[0].getMidiId(6) + ") " + handPoints[0].fingerPoints[0].getMidiVal(handPoints[0].fingerPoints[0].p.z,sD) + "   ]";
@@ -214,12 +236,15 @@ void draw() {
       sayText[7] = "midi controllers finger0-2     [   (" + handPoints[0].fingerPoints[2].getMidiId(10) + ") " + handPoints[0].fingerPoints[2].getMidiVal(handPoints[0].fingerPoints[2].p.x,sW) + ",   (" + handPoints[0].fingerPoints[2].getMidiId(11) + ") " + handPoints[0].fingerPoints[2].getMidiVal(handPoints[0].fingerPoints[2].p.y,sH) + ",   (" + handPoints[0].fingerPoints[2].getMidiId(12) + ") " + handPoints[0].fingerPoints[2].getMidiVal(handPoints[0].fingerPoints[2].p.z,sD) + "   ]";
       sayText[8] = "midi controllers finger0-3     [   (" + handPoints[0].fingerPoints[3].getMidiId(13) + ") " + handPoints[0].fingerPoints[3].getMidiVal(handPoints[0].fingerPoints[3].p.x,sW) + ",   (" + handPoints[0].fingerPoints[3].getMidiId(14) + ") " + handPoints[0].fingerPoints[3].getMidiVal(handPoints[0].fingerPoints[3].p.y,sH) + ",   (" + handPoints[0].fingerPoints[3].getMidiId(15) + ") " + handPoints[0].fingerPoints[3].getMidiVal(handPoints[0].fingerPoints[3].p.z,sD) + "   ]";
       sayText[9] = "midi controllers finger0-4     [   (" + handPoints[0].fingerPoints[4].getMidiId(16) + ") " + handPoints[0].fingerPoints[4].getMidiVal(handPoints[0].fingerPoints[4].p.x,sW) + ",   (" + handPoints[0].fingerPoints[4].getMidiId(17) + ") " + handPoints[0].fingerPoints[4].getMidiVal(handPoints[0].fingerPoints[4].p.y,sH) + ",   (" + handPoints[0].fingerPoints[4].getMidiId(18) + ") " + handPoints[0].fingerPoints[4].getMidiVal(handPoints[0].fingerPoints[4].p.z,sD) + "   ]";
-      sayText[10] = "midi controllers hand1     [   (" + handPoints[1].getMidiId(1) + ") " + handPoints[1].getMidiVal(handPoints[1].p.x,sW) + ",   (" + handPoints[1].getMidiId(2) + ") " + handPoints[1].getMidiVal(handPoints[1].p.y,sH) + ",   (" + handPoints[1].getMidiId(3) + ") " + handPoints[1].getMidiVal(handPoints[1].p.z,sD) + "   ]";
-      sayText[11] = "midi controllers finger1-0     [   (" + handPoints[1].fingerPoints[0].getMidiId(4) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.x,sW) + ",   (" + handPoints[1].fingerPoints[0].getMidiId(5) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.y,sH) + ",   (" + handPoints[1].fingerPoints[0].getMidiId(6) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.z,sD) + "   ]";
-      sayText[12] = "midi controllers finger1-1     [   (" + handPoints[1].fingerPoints[1].getMidiId(7) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.x,sW) + ",   (" + handPoints[1].fingerPoints[1].getMidiId(8) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.y,sH) + ",   (" + handPoints[1].fingerPoints[1].getMidiId(9) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.z,sD) + "   ]";
-      sayText[13] = "midi controllers finger1-2     [   (" + handPoints[1].fingerPoints[2].getMidiId(10) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.x,sW) + ",   (" + handPoints[1].fingerPoints[2].getMidiId(11) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.y,sH) + ",   (" + handPoints[1].fingerPoints[2].getMidiId(12) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.z,sD) + "   ]";
-      sayText[14] = "midi controllers finger1-3     [   (" + handPoints[1].fingerPoints[3].getMidiId(13) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.x,sW) + ",   (" + handPoints[1].fingerPoints[3].getMidiId(14) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.y,sH) + ",   (" + handPoints[1].fingerPoints[3].getMidiId(15) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.z,sD) + "   ]";
-      sayText[15] = "midi controllers finger1-4     [   (" + handPoints[1].fingerPoints[4].getMidiId(16) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.x,sW) + ",   (" + handPoints[1].fingerPoints[4].getMidiId(17) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.y,sH) + ",   (" + handPoints[1].fingerPoints[4].getMidiId(18) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.z,sD) + "   ]";
+      sayText[10] = "";
+      sayText[11] = "midi controllers hand1     [   (" + handPoints[1].getMidiId(1) + ") " + handPoints[1].getMidiVal(handPoints[1].p.x,sW) + ",   (" + handPoints[1].getMidiId(2) + ") " + handPoints[1].getMidiVal(handPoints[1].p.y,sH) + ",   (" + handPoints[1].getMidiId(3) + ") " + handPoints[1].getMidiVal(handPoints[1].p.z,sD) + "   ]";
+      sayText[12] = "midi controllers finger1-0     [   (" + handPoints[1].fingerPoints[0].getMidiId(4) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.x,sW) + ",   (" + handPoints[1].fingerPoints[0].getMidiId(5) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.y,sH) + ",   (" + handPoints[1].fingerPoints[0].getMidiId(6) + ") " + handPoints[1].fingerPoints[0].getMidiVal(handPoints[1].fingerPoints[0].p.z,sD) + "   ]";
+      sayText[13] = "midi controllers finger1-1     [   (" + handPoints[1].fingerPoints[1].getMidiId(7) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.x,sW) + ",   (" + handPoints[1].fingerPoints[1].getMidiId(8) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.y,sH) + ",   (" + handPoints[1].fingerPoints[1].getMidiId(9) + ") " + handPoints[1].fingerPoints[1].getMidiVal(handPoints[1].fingerPoints[1].p.z,sD) + "   ]";
+      sayText[14] = "midi controllers finger1-2     [   (" + handPoints[1].fingerPoints[2].getMidiId(10) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.x,sW) + ",   (" + handPoints[1].fingerPoints[2].getMidiId(11) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.y,sH) + ",   (" + handPoints[1].fingerPoints[2].getMidiId(12) + ") " + handPoints[1].fingerPoints[2].getMidiVal(handPoints[1].fingerPoints[2].p.z,sD) + "   ]";
+      sayText[15] = "midi controllers finger1-3     [   (" + handPoints[1].fingerPoints[3].getMidiId(13) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.x,sW) + ",   (" + handPoints[1].fingerPoints[3].getMidiId(14) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.y,sH) + ",   (" + handPoints[1].fingerPoints[3].getMidiId(15) + ") " + handPoints[1].fingerPoints[3].getMidiVal(handPoints[1].fingerPoints[3].p.z,sD) + "   ]";
+      sayText[16] = "midi controllers finger1-4     [   (" + handPoints[1].fingerPoints[4].getMidiId(16) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.x,sW) + ",   (" + handPoints[1].fingerPoints[4].getMidiId(17) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.y,sH) + ",   (" + handPoints[1].fingerPoints[4].getMidiId(18) + ") " + handPoints[1].fingerPoints[4].getMidiVal(handPoints[1].fingerPoints[4].p.z,sD) + "   ]";
+      sayText[17] = "";
+      sayText[18] = "";
     }
       //~~
     fill(fontColor);
@@ -243,6 +268,7 @@ void draw() {
   }
   //oscTester();
   //midiTester();
+  if(sendOsc) sendActiveOsc(); //sends count of active hands, fingers, tools, origins
 }
 
 //not reading correctly from settings
@@ -340,7 +366,7 @@ void drawTraces(ArrayList target, color _c) {
       if (i>target.size()-int(timeToTrace*fps)) {
         PVector p = (PVector) target.get(i);
         stroke(_c);
-        strokeWeight(2);
+        strokeWeight(4);
         noFill();
         point(p.x, p.y, p.z);
       }
@@ -426,3 +452,9 @@ boolean checkNetConnection(int _t) {
   return answer;
 }
 
+void resetActiveCount(){
+  activeHands = 0;
+  activeFingers = 0;
+  activeOrigins = 0;
+  activeTools = 0;
+}

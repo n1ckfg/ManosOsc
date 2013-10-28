@@ -6,14 +6,16 @@ class HandPoint {
   int idHand = 0;
   color fgColor = color(0, 0, 255);
   String pointType = "hand";
-  //boolean active = false;
-
+  boolean active = false;
+  boolean clicked = false;
+  
   PointablePoint[] fingerPoints = new PointablePoint[numFingers];
   PointablePoint[] toolPoints = new PointablePoint[numTools];
   PointablePoint[] originPoints = new PointablePoint[numOrigins];
   ArrayList handPath;
   PVector pStart = new PVector(0,0,0);
   PVector p = new PVector(0,0,0);
+  PVector pp = new PVector(0,0,0); //previous position
 
   HandPoint(int _ih, PVector _p) {
     idHand = _ih;
@@ -36,6 +38,11 @@ class HandPoint {
     if(record||showTraces) handPath.add(p);
     if(sendOsc) sendHandOsc();
     if(sendMidi) sendHandMidi();
+    if(pp == p){
+      active = false;
+    }else{
+      active = true;
+    }
   }
 
   void draw() {
@@ -53,19 +60,45 @@ class HandPoint {
   void sendHandOsc() {
     OscMessage myMessage;
     try{
-      myMessage = new OscMessage("/" + "hand" + idHand);
-      myMessage.add(pointType);
-      myMessage.add(idHand);
-      if(centerMode){
-        myMessage.add((2.0*(p.x/sW))-1.0);
-        myMessage.add((2.0*(p.y/sH))-1.0);
-        myMessage.add((2.0*(p.z/sD))-1.0);
-      }else{
+      if(oscFormat.equals("Animata")){
+        myMessage = new OscMessage("/joint");
+        myMessage.add("hand" + idHand);
+        myMessage.add(((p.x/sW)*640)+0);
+        myMessage.add(((p.y/sH)*480)+0);
+        oscP5.send(myMessage, myRemoteLocation);
+      }else if(oscFormat.equals("Isadora")){
+        myMessage = new OscMessage("/isadora/"+getMidiId(1));
+        myMessage.add(p.x/sW);
+        oscP5.send(myMessage, myRemoteLocation);
+        myMessage = new OscMessage("/isadora/"+getMidiId(2));
+        myMessage.add(p.y/sH);
+        oscP5.send(myMessage, myRemoteLocation);
+        myMessage = new OscMessage("/isadora/"+getMidiId(3));
+        myMessage.add(p.z/sD);
+        oscP5.send(myMessage, myRemoteLocation);        
+      }else if(oscFormat.equals("OSCeleton")){
+        myMessage = new OscMessage("/joint");
+        myMessage.add("hand" + idHand);
+        myMessage.add(idHand);
         myMessage.add(p.x/sW);
         myMessage.add(p.y/sH);
-        myMessage.add(p.z/sD);        
+        myMessage.add(p.z/sD);
+        oscP5.send(myMessage, myRemoteLocation);
+      }else{
+        myMessage = new OscMessage("/" + "hand" + idHand);
+        myMessage.add(pointType);
+        myMessage.add(idHand);
+        if(centerMode){
+          myMessage.add((2.0*(p.x/sW))-1.0);
+          myMessage.add((2.0*(p.y/sH))-1.0);
+          myMessage.add((2.0*(p.z/sD))-1.0);
+        }else{
+          myMessage.add(p.x/sW);
+          myMessage.add(p.y/sH);
+          myMessage.add(p.z/sD);        
+        }
+        oscP5.send(myMessage, myRemoteLocation);
       }
-      oscP5.send(myMessage, myRemoteLocation);
     }catch(Exception e){ }
   }  
 

@@ -1,4 +1,4 @@
-ManosOsc 1.1.0
+ManosOsc 1.1.4
 by Nick Fox-Gieg  |  fox-gieg.com
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -63,6 +63,17 @@ names:
 /finger1-2
 /finger1-3
 /finger1-4
+
+* The same naming convention is used for tool and origin (first knuckle) channels.
+
+* Active channel:
+contents:
+int (active hands), int (active fingers), int (active tools), int (active origins)
+
+name:
+/active
+
+* If you'd like to send different channel message formats, change the "OSC Channel Format" setting.
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

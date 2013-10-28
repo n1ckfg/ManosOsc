@@ -1,7 +1,10 @@
 void keyPressed() {
   if (key=='z' || key=='Z') reverseZ = !reverseZ;
   if (key=='d' || key=='D'){
-    if(debug && !debugDisplayMidi){
+    if(!debug && debugDisplayMidi){ //if debug was turned off, show OSC screen first
+      debug = true;
+      debugDisplayMidi = false;
+    }else if(debug && !debugDisplayMidi){ //if already showing the OSC screen, switch to MIDI screen
       debugDisplayMidi = true;
     }else{
       debugDisplayMidi = false;
@@ -11,11 +14,11 @@ void keyPressed() {
   if (key=='t' || key=='T') showTraces = !showTraces;
   if (key=='m' || key=='M'){
     sendMidi = !sendMidi;
-    //if(sendMidi) debugDisplayMidi = true;
+    if(sendMidi) debugDisplayMidi = true;
   }
   if (key=='o' || key=='O'){
     sendOsc = !sendOsc;
-    //if(sendOsc) debugDisplayMidi = false;
+    if(sendOsc) debugDisplayMidi = false;
   }
   if (key=='f' || key=='F') openAppFolderHandler();
   /*

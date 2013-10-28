@@ -7,6 +7,9 @@ OSC Send Port
 Send OSC Active
 true
 
+OSC Channel Format (Manos, OSCeleton, Animata, Isadora)
+Manos
+
 MIDI Send Channel
 0
 
@@ -23,7 +26,7 @@ Center Coordinates
 false
 
 Open App Folder at Startup
-false
+true
 
 Show Splash Screen
 true
@@ -47,7 +50,7 @@ Debug Display On
 true
 
 Show Traces
-true
+false
 
 Time to Trace
 0.5
