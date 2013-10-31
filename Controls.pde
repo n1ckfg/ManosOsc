@@ -21,11 +21,12 @@ void keyPressed() {
     if(sendOsc) debugDisplayMidi = false;
   }
   if (key=='f' || key=='F') openAppFolderHandler();
-  /*
-  if(key==' ' || keyCode==33 || keyCode==34){
+  
+  if(key=='r' || key=='R' || keyCode==33 || keyCode==34){
     record = !record;
     firstRun = false;
-  }*/
+    if(!record) openAppFolderHandler();
+  }
 }
 
 void openAppFolderHandler(){

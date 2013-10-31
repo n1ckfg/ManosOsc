@@ -107,7 +107,7 @@ void mayaKeysEnd() {
   dataMaya.add("#rigidBody(passive=True)" + "\r");
   dataMaya.add("#move(0,0,0)" + "\r");
   */
-  dataMaya.endSave(mayaFilePath + "/" + mayaFileName + "." + mayaFileType);
+  dataMaya.endSave(mayaFilePath + "/" + mayaFileName + "_" + millis() + "." + mayaFileType);
 }
 
 

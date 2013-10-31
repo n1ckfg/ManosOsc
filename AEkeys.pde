@@ -140,7 +140,7 @@ void AEkeysEnd() {
   dataAE.add("\r");
   dataAE.add("\t" + "app.endUndoGroup();" + "\r");
   dataAE.add("}  //end script" + "\r");
-  dataAE.endSave(aeFilePath + "/" + aeFileName + "." + aeFileType);
+  dataAE.endSave(aeFilePath + "/" + aeFileName + "_" + millis() + "." + aeFileType);
 }
 
 
