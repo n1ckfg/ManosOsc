@@ -324,10 +324,10 @@
 					"id" : "obj-8",
 					"maxclass" : "newobj",
 					"numinlets" : 1,
-					"numoutlets" : 5,
-					"outlettype" : [ "float", "float", "float", "float", "float" ],
-					"patching_rect" : [ 126.0, 180.0, 83.0, 20.0 ],
-					"text" : "unpack f f f f f"
+					"numoutlets" : 6,
+					"outlettype" : [ "", "int", "int", "float", "float", "float" ],
+					"patching_rect" : [ 126.0, 180.0, 91.0, 20.0 ],
+					"text" : "unpack s i i f f f"
 				}
 
 			}
@@ -567,7 +567,7 @@
 					"destination" : [ "obj-14", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"source" : [ "obj-8", 2 ]
+					"source" : [ "obj-8", 3 ]
 				}
 
 			}
@@ -576,7 +576,7 @@
 					"destination" : [ "obj-16", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"source" : [ "obj-8", 3 ]
+					"source" : [ "obj-8", 4 ]
 				}
 
 			}
@@ -585,7 +585,7 @@
 					"destination" : [ "obj-17", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
-					"source" : [ "obj-8", 4 ]
+					"source" : [ "obj-8", 5 ]
 				}
 
 			}
