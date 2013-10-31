@@ -5,6 +5,7 @@ class OscHand {
   PVector p, s, t, e;
   boolean show = false;
   int idHand = 0;
+  int idActive = 0;
   int fingerCount = 0;
   int toolCount = 0;
   PFont font;

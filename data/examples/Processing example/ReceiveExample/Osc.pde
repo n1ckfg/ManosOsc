@@ -21,17 +21,19 @@ void oscSetup() {
 void oscEvent(OscMessage msg) {
  try{
    for(int i=0;i<oscChannelNames.length;i++){
-      if (msg.checkAddrPattern("/"+oscChannelNames[i]) && msg.checkTypetag("sifff")) { //a hand
-        int idHand = msg.get(1).intValue();
-        hands[idHand].show = true;
-        hands[idHand].idHand = idHand;
-        hands[idHand].t.x = sW * msg.get(2).floatValue();
-        hands[idHand].t.y = sH * msg.get(3).floatValue();
-        hands[idHand].t.z = sD * msg.get(4).floatValue();
-        println(hands[idHand].idHand + " " + hands[idHand].p);
-      }else if (msg.checkAddrPattern("/"+oscChannelNames[i]) && msg.checkTypetag("siifff")) { //a pointable
+      if (msg.checkAddrPattern("/"+oscChannelNames[i]) && msg.checkTypetag("siifff")) {
         String temp = ""+msg.get(0);
-        if(temp.equals("finger")){
+        if(temp.equals("hand")){
+          int idHand = msg.get(1).intValue();
+          int idActive = msg.get(2).intValue();
+          hands[idHand].show = true;
+          hands[idHand].idHand = idHand;
+          hands[idHand].idActive = idActive;
+          hands[idHand].t.x = sW * msg.get(3).floatValue();
+          hands[idHand].t.y = sH * msg.get(4).floatValue();
+          hands[idHand].t.z = sD * msg.get(5).floatValue();
+          println(hands[idHand].idHand + " " + hands[idHand].p);
+        }else if(temp.equals("finger")){
           int idHand = msg.get(1).intValue();
           int idFinger = msg.get(2).intValue();
           hands[idHand].oscFinger[idFinger].show = true;
