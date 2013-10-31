@@ -153,6 +153,7 @@ void draw() {
         catch(Exception e) {
         }
       }
+      handPoints[handCounter].idActive = originCounter; //this updates hand's internal count of active pointables
 
       //fingers on a hand
       for (Finger finger : leap.getFingerList(hand)) {
@@ -243,7 +244,7 @@ void draw() {
         sayText[16] = "osc channel /joint     [   (s) finger1-4,   (i) " + handPoints[1].idHand + convertVals(handPoints[1].fingerPoints[4].p, "finger");
         sayText[17] = "";
         sayText[18] = "osc channel /active     [   (i) " + activeHands+ ",   (i) " + activeFingers + ",   (i) " + activeTools + ",   (i) " + activeOrigins + "   ]";
-      }else{ //default
+      }else if(oscFormat.equals("OldManos")){
         sayText[4] = "osc channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + convertVals(handPoints[0].p, "hand");
         sayText[5] = "osc channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
         sayText[6] = "osc channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + convertVals(handPoints[0].fingerPoints[1].p, "finger");
@@ -252,6 +253,22 @@ void draw() {
         sayText[9] = "osc channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + convertVals(handPoints[0].fingerPoints[4].p, "finger");
         sayText[10]="";
         sayText[11] = "osc channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + convertVals(handPoints[1].p, "hand");
+        sayText[12] = "osc channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + convertVals(handPoints[1].fingerPoints[0].p, "finger");
+        sayText[13] = "osc channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + convertVals(handPoints[1].fingerPoints[1].p, "finger");
+        sayText[14] = "osc channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + convertVals(handPoints[1].fingerPoints[2].p, "finger");
+        sayText[15] = "osc channel /finger1-3     [   (s) " + handPoints[1].fingerPoints[3].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[3].idPointable + convertVals(handPoints[1].fingerPoints[3].p, "finger");
+        sayText[16] = "osc channel /finger1-4     [   (s) " + handPoints[1].fingerPoints[4].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[4].idPointable + convertVals(handPoints[1].fingerPoints[4].p, "finger");
+        sayText[17] = "";
+        sayText[18] = "osc channel /active     [   (i) " + activeHands+ ",   (i) " + activeFingers + ",   (i) " + activeTools + ",   (i) " + activeOrigins + "   ]";
+      }else{ //default
+        sayText[4] = "osc channel /hand0     [   (s) " + handPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].idActive + convertVals(handPoints[0].p, "hand");
+        sayText[5] = "osc channel /finger0-0     [   (s) " + handPoints[0].fingerPoints[0].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[0].idPointable + convertVals(handPoints[0].fingerPoints[0].p, "finger");
+        sayText[6] = "osc channel /finger0-1     [   (s) " + handPoints[0].fingerPoints[1].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[1].idPointable + convertVals(handPoints[0].fingerPoints[1].p, "finger");
+        sayText[7] = "osc channel /finger0-2     [   (s) " + handPoints[0].fingerPoints[2].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[2].idPointable + convertVals(handPoints[0].fingerPoints[2].p, "finger");
+        sayText[8] = "osc channel /finger0-3     [   (s) " + handPoints[0].fingerPoints[3].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[3].idPointable + convertVals(handPoints[0].fingerPoints[3].p, "finger");
+        sayText[9] = "osc channel /finger0-4     [   (s) " + handPoints[0].fingerPoints[4].pointType + ",   (i) " + handPoints[0].idHand + ",   (i) " + handPoints[0].fingerPoints[4].idPointable + convertVals(handPoints[0].fingerPoints[4].p, "finger");
+        sayText[10]="";
+        sayText[11] = "osc channel /hand1     [   (s) " + handPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].idActive + convertVals(handPoints[1].p, "hand");
         sayText[12] = "osc channel /finger1-0     [   (s) " + handPoints[1].fingerPoints[0].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[0].idPointable + convertVals(handPoints[1].fingerPoints[0].p, "finger");
         sayText[13] = "osc channel /finger1-1     [   (s) " + handPoints[1].fingerPoints[1].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[1].idPointable + convertVals(handPoints[1].fingerPoints[1].p, "finger");
         sayText[14] = "osc channel /finger1-2     [   (s) " + handPoints[1].fingerPoints[2].pointType + ",   (i) " + handPoints[1].idHand + ",   (i) " + handPoints[1].fingerPoints[2].idPointable + convertVals(handPoints[1].fingerPoints[2].p, "finger");
@@ -437,7 +454,7 @@ String convertVals(PVector p, String t) {
   if(oscFormat.equals("Animata")){
     s = ",   (f) " + rounder(640 * (p.x/sW), 3) + ",   (f) " + rounder(480 * (p.y/sH), 3) + "   ]";
   }else{
-    if (t=="hand") {
+    if (t=="hand") { //doesn't appear to do anything; was I planning to have something different for hands?
       if (centerMode) {
         s = ",   (f) " + rounder((2.0*(p.x/sW))-1.0, 3) + ",   (f) " + rounder((2.0*(p.y/sH))-1.0, 3) + ",   (f) " + rounder((2.0*(p.z/sD))-1.0, 3) + "   ]";
       }

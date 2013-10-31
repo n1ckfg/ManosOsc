@@ -7,7 +7,7 @@ OSC Send Port
 Send OSC Active
 true
 
-OSC Channel Format (Manos, OSCeleton, Animata, Isadora)
+OSC Channel Format (Manos, OldManos, OSCeleton, Animata, Isadora)
 Manos
 
 MIDI Send Channel

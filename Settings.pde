@@ -27,7 +27,7 @@ class Settings {
         if (settings.data[i].equals("Send OSC Active")) sendOsc = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
         if (settings.data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("OSC Channel Format (Manos, OSCeleton, Animata, Isadora)")) oscFormat = setString(settings.data[i+1]);
+        if (settings.data[i].equals("OSC Channel Format (Manos, OldManos, OSCeleton, Animata, Isadora)")) oscFormat = setString(settings.data[i+1]);
         if (settings.data[i].equals("Save Maya Python")) writeMaya = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Maya Offset Translate")) mayaOffsetTranslate = setPVector(settings.data[i+1]);
         if (settings.data[i].equals("Maya Offset Scale")) mayaOffsetScale = setPVector(settings.data[i+1]);

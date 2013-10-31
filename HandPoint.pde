@@ -3,6 +3,7 @@ class HandPoint {
   int numFingers = 5;
   int numOrigins = numFingers;
   int numTools = numFingers;
+  int idActive = 0;
   int idHand = 0;
   color fgColor = color(0, 0, 255);
   String pointType = "hand";
@@ -84,10 +85,25 @@ class HandPoint {
         myMessage.add(p.y/sH);
         myMessage.add(p.z/sD);
         oscP5.send(myMessage, myRemoteLocation);
-      }else{
+      }else if(oscFormat.equals("OldManos")){
         myMessage = new OscMessage("/" + "hand" + idHand);
         myMessage.add(pointType);
         myMessage.add(idHand);
+        if(centerMode){
+          myMessage.add((2.0*(p.x/sW))-1.0);
+          myMessage.add((2.0*(p.y/sH))-1.0);
+          myMessage.add((2.0*(p.z/sD))-1.0);
+        }else{
+          myMessage.add(p.x/sW);
+          myMessage.add(p.y/sH);
+          myMessage.add(p.z/sD);        
+        }
+        oscP5.send(myMessage, myRemoteLocation);
+      }else{ //default
+        myMessage = new OscMessage("/" + "hand" + idHand);
+        myMessage.add(pointType);
+        myMessage.add(idHand);
+        myMessage.add(idActive);
         if(centerMode){
           myMessage.add((2.0*(p.x/sW))-1.0);
           myMessage.add((2.0*(p.y/sH))-1.0);

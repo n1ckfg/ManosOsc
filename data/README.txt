@@ -1,4 +1,4 @@
-ManosOsc 1.1.4
+ManosOsc 1.1.5
 by Nick Fox-Gieg  |  fox-gieg.com
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -42,7 +42,7 @@ Processing: http://processing.org/
 
 * Hand channels:
 contents: 
-string (name), int (hand id), float (x), float (y), float (z)   
+string (name), int (hand id), int (active origins), float (x), float (y), float (z)   
 
 names: 
 /hand0  
@@ -73,7 +73,8 @@ int (active hands), int (active fingers), int (active tools), int (active origin
 name:
 /active
 
-* If you'd like to send different channel message formats, change the "OSC Channel Format" setting.
+* If you'd like to send different channel message formats, change the "OSC Channel Format" setting. Supported apps include Isadora, OSCeleton, and Animata. To preserve compatibility with old projects, you can also choose the "OldManos" format setting, which had a different message format for hands: 
+string (name), int (hand id), float (x), float (y), float (z)   
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

@@ -93,7 +93,23 @@ class PointablePoint{
         myMessage.add(p.y/sH);
         myMessage.add(p.z/sD);
         oscP5.send(myMessage, myRemoteLocation);
-      }else{
+      }else if(oscFormat.equals("OldManos")){
+        //myMessage = new OscMessage("/" + "finger" + idHand + "-" + idPointable);
+        myMessage = new OscMessage("/" + pointType + idHand + "-" + idPointable);
+        myMessage.add(pointType);
+        myMessage.add(idHand);
+        myMessage.add(idPointable);
+        if(centerMode){
+          myMessage.add((2.0*(p.x/sW))-1.0);
+          myMessage.add((2.0*(p.y/sH))-1.0);
+          myMessage.add((2.0*(p.z/sD))-1.0);
+        }else{
+          myMessage.add(p.x/sW);
+          myMessage.add(p.y/sH);
+          myMessage.add(p.z/sD);        
+        }
+        oscP5.send(myMessage, myRemoteLocation);
+      }else{ //default
         //myMessage = new OscMessage("/" + "finger" + idHand + "-" + idPointable);
         myMessage = new OscMessage("/" + pointType + idHand + "-" + idPointable);
         myMessage.add(pointType);
