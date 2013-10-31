@@ -44,7 +44,7 @@ int activeFingers = 0;
 int activeOrigins = 0;
 int activeTools = 0;
 
-String scriptsFilePath = "data/scripts";
+String scriptsFilePath = "scripts";
 boolean record = false;
 boolean firstRun = true;
 boolean applySmoothing = true;
