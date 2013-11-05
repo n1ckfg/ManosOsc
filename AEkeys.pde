@@ -1,5 +1,5 @@
 String aeFileName = "AEscript";
-String aeFilePath = scriptsFilePath;
+//String aeFilePath = scriptsFilePath;
 String aeFileType = "jsx";
 
 ArrayList AEtarget;
@@ -140,7 +140,7 @@ void AEkeysEnd() {
   dataAE.add("\r");
   dataAE.add("\t" + "app.endUndoGroup();" + "\r");
   dataAE.add("}  //end script" + "\r");
-  dataAE.endSave(aeFilePath + "/" + aeFileName + "_" + millis() + "." + aeFileType);
+  dataAE.endSave(scriptsFilePath + "/" + aeFileName + "_" + millis() + "." + aeFileType);
 }
 
 

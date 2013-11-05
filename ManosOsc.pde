@@ -64,6 +64,7 @@ void setup() {
   Settings settings = new Settings("settings.txt");
   size(sW,sH, P3D);
   frameRate(fps);
+  scriptsFolderHandler();
   leap = new LeapMotionP5(this);
   if (System.getProperty("os.name").equals("Mac OS X")) {
     try {
@@ -308,8 +309,11 @@ void draw() {
     fill(fontColor);
     for (int i=0;i<sayText.length;i++) {
       try {
-        if (i==0) text(sayText[i], textX, textY*(i+1));
-        if (i>0 && debug) text(sayText[i], textX, textY*(i+1));
+        if (i<2){
+          text(sayText[i], textX, textY*(i+1));
+        }else{
+          if (debug) text(sayText[i], textX, textY*(i+1));
+        }
       }
       catch(Exception e) {
       }
