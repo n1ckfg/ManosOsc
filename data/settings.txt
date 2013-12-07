@@ -26,6 +26,9 @@ Center Coordinates
 false
 
 Open App Folder at Startup
+true
+
+Fixed Hand Positions
 false
 
 Show Splash Screen

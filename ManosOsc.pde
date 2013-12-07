@@ -59,6 +59,7 @@ int counter = 0;
 int numHands = 2;
 HandPoint[] handPoints = new HandPoint[numHands];
 PVector pStart = new PVector(0, 0, 0);
+boolean fixedPositions = false;
 
 void setup() {
   Settings settings = new Settings("settings.txt");
@@ -126,6 +127,13 @@ void draw() {
     else {
       background(75, 0, 0);
     }
+
+    if(fixedPositions){
+      stroke(255,33);
+      strokeWeight(4);
+      line(width/2,0,width/2,height);
+    } 
+    
     int handCounter = 0;
     //hands
     for (Hand hand : leap.getHandList()) {
@@ -136,6 +144,31 @@ void draw() {
         handPoints[handCounter].pp = handPoints[handCounter].p;
         handPoints[handCounter].p = getPos(leap.getPosition(hand));
         handPoints[handCounter].run();
+        if(fixedPositions){
+          if(handPoints[handCounter].p.x<width/2){
+            handPoints[handCounter].idHand = 0; //left
+            for(int i=0;i<handPoints[handCounter].numOrigins;i++){
+              handPoints[handCounter].originPoints[i].idHand = 0;
+            }
+            for (int i=0;i<handPoints[handCounter].numFingers;i++) {
+              handPoints[handCounter].fingerPoints[i].idHand = 0;
+            }
+            for (int i=0;i<handPoints[handCounter].numTools;i++) {
+              handPoints[handCounter].toolPoints[i].idHand = 0;
+            }            
+          }else{
+            handPoints[handCounter].idHand = 1; //right
+            for(int i=0;i<handPoints[handCounter].numOrigins;i++){
+              handPoints[handCounter].originPoints[i].idHand = 1;
+            }
+            for (int i=0;i<handPoints[handCounter].numFingers;i++) {
+              handPoints[handCounter].fingerPoints[i].idHand = 1;
+            }
+            for (int i=0;i<handPoints[handCounter].numTools;i++) {
+              handPoints[handCounter].toolPoints[i].idHand = 1;
+            }  
+          }
+        }
         if(handPoints[handCounter].active) activeHands++;
       }
       catch(Exception e) {
@@ -328,6 +361,7 @@ void draw() {
       //exit();
     }
   }
+
   //oscTester();
   //midiTester();
   if(sendOsc) sendActiveOsc(); //sends count of active hands, fingers, tools, origins

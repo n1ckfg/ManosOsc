@@ -16,6 +16,7 @@ class Settings {
         if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Framerate")) fps = setInt(settings.data[i+1]);
         //if (settings.data[i].equals("Run in Fullscreen")) fullScreen = setBoolean(settings.data[i+1]);
+        if (settings.data[i].equals("Fixed Hand Positions")) fixedPositions = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Font Size")) fontSize = setInt(settings.data[i+1]);
         if (settings.data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
         if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
