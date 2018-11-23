@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<animata version="0.004">
+    <layer name="layer_0002" x="0.000000" y="0.000000" z="0.000000" alpha="1.000000" scale="1.000000" vis="1">
+        <skeleton>
+            <joints>
+                <joint name="hand0" x="344.376709" y="264.888336" fixed="0" selected="0" osc="1" />
+                <joint name="origin0-0" x="426.313354" y="184.519180" fixed="0" selected="0" osc="1" />
+                <joint name="finger0-0" x="495.433655" y="118.693695" fixed="0" selected="0" osc="1" />
+                <joint name="hand1" x="116.192001" y="115.244576" fixed="0" selected="0" osc="1" />
+                <joint name="origin1-0" x="191.861969" y="200.029724" fixed="0" selected="0" osc="1" />
+                <joint name="finger1-0" x="256.967621" y="144.742767" fixed="0" selected="0" osc="1" />
+            </joints>
+            <bones>
+                <bone j0="0" j1="1" stiffness="0.000655" lm="1.000000" lmmin="0.010000" lmmax="1.000000" tempo="0.000000" time="1.570796" size="114.756264" selected="0" radius="1.000000" />
+                <bone j0="1" j1="2" stiffness="0.000655" lm="1.000000" lmmin="0.010000" lmmax="1.000000" tempo="0.000000" time="1.570796" size="95.441078" selected="0" radius="1.000000" />
+                <bone j0="3" j1="4" stiffness="0.000655" lm="1.000000" lmmin="0.010000" lmmax="1.000000" tempo="0.000000" time="1.570796" size="113.635384" selected="0" radius="1.000000" />
+                <bone j0="4" j1="5" stiffness="0.000655" lm="1.000000" lmmin="0.010000" lmmax="1.000000" tempo="0.000000" time="1.570796" size="85.428337" selected="0" radius="1.000000" />
+            </bones>
+        </skeleton>
+    </layer>
+</animata>
