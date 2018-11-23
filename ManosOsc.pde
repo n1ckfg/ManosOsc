@@ -35,6 +35,7 @@ boolean doNetConnection = false;
 int netCheckCounter = 0;
 int netCheckInterval = 2000;
 int netCheckTimeout = 1;
+InetAddress[] addresses;
 boolean fullScreen = false;
 boolean debugDisplayMidi = false;
 String oscFormat = "Legacy";
@@ -535,17 +536,16 @@ float rounder(float _val, float _places) {
 boolean checkNetConnection(int _t) {
   boolean answer = false;
   try {
-    int timeout = _t; //duration over which to retry
-    InetAddress[] addresses = InetAddress.getAllByName("leapmotion.com");
+    addresses = InetAddress.getAllByName("leapmotion.com");
     for (InetAddress address : addresses) {
-      if (address.isReachable(timeout)) {
-        answer = true;
+      //if (address.isReachable(_t)) { //timeout
+        //answer = true;
         //println("Internet connection, and " + address + " is reachable.");
-      }
-      else {
+      //}
+     //else {
         answer = true;
         //println("Internet connection, but " + address + " is not reachable.");
-      }
+      //}
     }
   }
   catch (Exception e) {
