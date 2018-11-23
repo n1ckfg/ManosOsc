@@ -1,4 +1,4 @@
-# ManosOsc 1.1.5
+# ManosOsc 1.1.7
 by Nick Fox-Gieg  |  fox-gieg.com
 
 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
