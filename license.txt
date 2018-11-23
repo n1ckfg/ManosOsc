@@ -2,7 +2,7 @@ ManosOsc was developed with support from:
    Canada Council on the Arts
    Eyebeam Art + Technology Center
 
-Copyright (c) 2013 Nick Fox-Gieg
+Copyright (c) 2018 Nick Fox-Gieg
 http://fox-gieg.com
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
