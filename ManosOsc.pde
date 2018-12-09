@@ -61,10 +61,12 @@ int numHands = 2;
 HandPoint[] handPoints = new HandPoint[numHands];
 PVector pStart = new PVector(0, 0, 0);
 boolean fixedPositions = false;
+Settings settings;
 
 void setup() {
-  Settings settings = new Settings("settings.txt");
-  size(sW,sH, P3D);
+  size(700, 700, P3D);
+  settings = new Settings("settings.txt");
+  surface.setSize(sW, sH);
   frameRate(fps);
   scriptsFolderHandler();
   leap = new LeapMotionP5(this);

@@ -1,40 +1,39 @@
 class Settings {
 
-  Data settings;
+  String[] data;
 
   Settings(String _s) {
     try {
-      settings = new Data();
-      settings.load(_s);
-      for (int i=0;i<settings.data.length;i++) {
-        if (settings.data[i].equals("Check for Net Connection")) doNetConnection = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Center Coordinates")) centerMode = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Open App Folder at Startup")) openAppFolder = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Show Splash Screen")) showSplashScreen = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Stage Width")) sW = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Stage Height")) sH = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Framerate")) fps = setInt(settings.data[i+1]);
-        //if (settings.data[i].equals("Run in Fullscreen")) fullScreen = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Fixed Hand Positions")) fixedPositions = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Font Size")) fontSize = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Show Traces")) showTraces = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Time to Trace")) timeToTrace = setFloat(settings.data[i+1]);
-        if (settings.data[i].equals("Send MIDI Active")) sendMidi = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("MIDI Send Channel")) midiChannelNum = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("MIDI Send Port")) midiPortNum = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("Send OSC Active")) sendOsc = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
-        if (settings.data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
-        if (settings.data[i].equals("OSC Channel Format (Manos, OldManos, OSCeleton, Animata, Isadora)")) oscFormat = setString(settings.data[i+1]);
-        if (settings.data[i].equals("Save Maya Python")) writeMaya = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("Maya Offset Translate")) mayaOffsetTranslate = setPVector(settings.data[i+1]);
-        if (settings.data[i].equals("Maya Offset Scale")) mayaOffsetScale = setPVector(settings.data[i+1]);
-        if (settings.data[i].equals("Save After Effects JavaScript")) writeAE = setBoolean(settings.data[i+1]);
-        if (settings.data[i].equals("After Effects Offset Translate")) AEoffsetTranslate = setPVector(settings.data[i+1]);
-        if (settings.data[i].equals("After Effects Offset Scale")) AEoffsetScale = setPVector(settings.data[i+1]);
+      data = loadStrings(_s);
+      for (int i=0; i<data.length; i++) {
+        if (data[i].equals("Check for Net Connection")) doNetConnection = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Center Coordinates")) centerMode = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Open App Folder at Startup")) openAppFolder = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Show Splash Screen")) showSplashScreen = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Stage Width")) sW = setInt(settings.data[i+1]);
+        if (data[i].equals("Stage Height")) sH = setInt(settings.data[i+1]);
+        if (data[i].equals("Stage Depth")) sD = setInt(settings.data[i+1]);
+        if (data[i].equals("Framerate")) fps = setInt(settings.data[i+1]);
+        //if (data[i].equals("Run in Fullscreen")) fullScreen = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Fixed Hand Positions")) fixedPositions = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Font Size")) fontSize = setInt(settings.data[i+1]);
+        if (data[i].equals("Reverse Z Axis")) reverseZ = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Debug Display On")) debug = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Show Traces")) showTraces = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Time to Trace")) timeToTrace = setFloat(settings.data[i+1]);
+        if (data[i].equals("Send MIDI Active")) sendMidi = setBoolean(settings.data[i+1]);
+        if (data[i].equals("MIDI Send Channel")) midiChannelNum = setInt(settings.data[i+1]);
+        if (data[i].equals("MIDI Send Port")) midiPortNum = setInt(settings.data[i+1]);
+        if (data[i].equals("Send OSC Active")) sendOsc = setBoolean(settings.data[i+1]);
+        if (data[i].equals("OSC Send IP Number")) ipNumber = setString(settings.data[i+1]);
+        if (data[i].equals("OSC Send Port")) sendPort = setInt(settings.data[i+1]);
+        if (data[i].equals("OSC Channel Format (Manos, OldManos, OSCeleton, Animata, Isadora)")) oscFormat = setString(settings.data[i+1]);
+        if (data[i].equals("Save Maya Python")) writeMaya = setBoolean(settings.data[i+1]);
+        if (data[i].equals("Maya Offset Translate")) mayaOffsetTranslate = setPVector(settings.data[i+1]);
+        if (data[i].equals("Maya Offset Scale")) mayaOffsetScale = setPVector(settings.data[i+1]);
+        if (data[i].equals("Save After Effects JavaScript")) writeAE = setBoolean(settings.data[i+1]);
+        if (data[i].equals("After Effects Offset Translate")) AEoffsetTranslate = setPVector(settings.data[i+1]);
+        if (data[i].equals("After Effects Offset Scale")) AEoffsetScale = setPVector(settings.data[i+1]);
        }
     } 
     catch(Exception e) {
@@ -175,4 +174,3 @@ class Settings {
   }
   
 }
-
