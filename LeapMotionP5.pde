@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.awt.Component;
 
 import processing.core.PApplet;
 import processing.core.PVector;
@@ -53,6 +54,7 @@ public class LeapMotionP5 {
   private PApplet p;
   private LeapMotionListener listener;
   private Controller controller;
+  private Component component;
   private String sdkVersion = "0.7.7";
 
   private final float LEAP_WIDTH = 200.0f; // in mm
@@ -192,9 +194,10 @@ public class LeapMotionP5 {
   public Controller getController() {
     try {
       return this.controller;
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       System.err
-          .println("Can not return controller not initialized. Returning new Controller object");
+        .println("Can not return controller not initialized. Returning new Controller object");
       System.out.println(e);
       return new Controller();
     }
@@ -209,7 +212,8 @@ public class LeapMotionP5 {
   public Frame getFrame() {
     try {
       return this.currentFrame;
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       System.err.println("Can not return current frame. Returning new Frame object instead");
       System.err.println(e);
       return new Frame();
@@ -273,7 +277,8 @@ public class LeapMotionP5 {
   public CopyOnWriteArrayList<Frame> getFrames() {
     try {
       return this.oldFrames;
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       System.err.println("Can not return list of last frames. Returning empty list instead.");
       System.err.println(e);
       return new CopyOnWriteArrayList<Frame>();
@@ -427,7 +432,8 @@ public class LeapMotionP5 {
           }
         }
       }
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       // ignore
     }
     return hands;
@@ -609,7 +615,8 @@ public class LeapMotionP5 {
     try {
       currentVelo = getVelocity(hand);
       lastVelo = getVelocity(getHandById(hand.id(), lastFrame));
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       // ignore
     }
     currentVelo.sub(lastVelo);
@@ -732,7 +739,7 @@ public class LeapMotionP5 {
    */
   public PVector getTip(Pointable pointable) {
     return convertLeapToScreenDimension(pointable.tipPosition().getX(), pointable.tipPosition()
-        .getY(), pointable.tipPosition().getZ());
+      .getY(), pointable.tipPosition().getZ());
   }
 
   /**
@@ -760,9 +767,9 @@ public class LeapMotionP5 {
     Vector loc = calibratedScreen.intersect(pointable, true);
 
     float _x = PApplet.map(loc.getX(), 0, 1, 0, this.p.displayWidth);
-    _x -= p.getLocationOnScreen().x;
+    _x -= this.component.getLocationOnScreen().x;
     float _y = PApplet.map(loc.getY(), 0, 1, this.p.displayHeight, 0);
-    _y -= p.getLocationOnScreen().y;
+    _y -= this.component.getLocationOnScreen().y;
 
     pos = new PVector(_x, _y);
     return pos;
@@ -780,22 +787,23 @@ public class LeapMotionP5 {
     Vector oldLoc = new Vector();
     try {
       oldLoc =
-          getLastController().locatedScreens().get(this.activeScreenNr)
-              .intersect(getPointableById(pointable.id(), getLastFrame()), true);
+        getLastController().locatedScreens().get(this.activeScreenNr)
+        .intersect(getPointableById(pointable.id(), getLastFrame()), true);
       loc = this.controller.locatedScreens().get(this.activeScreenNr).intersect(pointable, true);
-    } catch (NullPointerException e) {
+    } 
+    catch (NullPointerException e) {
       // dirty dirty hack to keep the programm runing. i like it.
     }
 
     float _x = PApplet.map(loc.getX(), 0, 1, 0, this.p.displayWidth);
-    _x -= this.p.getLocationOnScreen().x;
+    _x -= this.component.getLocationOnScreen().x;
     float _y = PApplet.map(loc.getY(), 0, 1, this.p.displayHeight, 0);
-    _y -= this.p.getLocationOnScreen().y;
+    _y -= this.component.getLocationOnScreen().y;
 
     float _x2 = PApplet.map(oldLoc.getX(), 0, 1, 0, this.p.displayWidth);
-    _x2 -= this.p.getLocationOnScreen().x;
+    _x2 -= this.component.getLocationOnScreen().x;
     float _y2 = PApplet.map(oldLoc.getY(), 0, 1, this.p.displayHeight, 0);
-    _y2 -= this.p.getLocationOnScreen().y;
+    _y2 -= this.component.getLocationOnScreen().y;
 
     return new PVector(_x - _x2, _y - _y2);
   }
@@ -817,8 +825,8 @@ public class LeapMotionP5 {
     direction.z = pointable.direction().getZ();
     direction.mult(length);
     anklePos =
-        new Vector(pointable.tipPosition().getX() - direction.x, pointable.tipPosition().getY()
-            - direction.y, pointable.tipPosition().getZ() - direction.z);
+      new Vector(pointable.tipPosition().getX() - direction.x, pointable.tipPosition().getY()
+      - direction.y, pointable.tipPosition().getZ() - direction.z);
 
     return vectorToPVector(anklePos);
   }
@@ -885,7 +893,8 @@ public class LeapMotionP5 {
     try {
       currentVelo = getVelocity(pointable);
       lastVelo = getVelocity(getPointableById(pointable.id(), lastFrame));
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
       // ignore
     }
     currentVelo.sub(lastVelo);
