@@ -83,7 +83,7 @@ class Data {
  
       // Comment out if you want to use absolute paths
       // or if you're not using this inside PApplet
-      if(sketchPath!=null) prefix=savePath(prefix);
+      //if(sketchPath!=null) prefix=savePath(prefix);
  
       index=0;
       ok=false;

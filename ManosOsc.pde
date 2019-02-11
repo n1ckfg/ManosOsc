@@ -1,7 +1,7 @@
 //ManosOsc by Nick Fox-Gieg  |  fox-gieg.com
 //thanks to Liubo Borissov, Grace Christenbery, Alex Kaufmann, Victoria Nece, Marcel Schwittlick
 
-import com.onformative.leap.LeapMotionP5;
+//import com.onformative.leap.LeapMotionP5;
 import com.leapmotion.leap.*;
 import java.awt.Desktop;
 import java.net.InetAddress;
@@ -371,9 +371,9 @@ void draw() {
 }
 
 //not reading correctly from settings
-boolean sketchFullScreen() {
-  return fullScreen;
-}
+//boolean sketchFullScreen() {
+  //return fullScreen;
+//}
   
 String setOnOff(boolean _b) {
   String s;

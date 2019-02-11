@@ -142,5 +142,3 @@ void AEkeysEnd() {
   dataAE.add("}  //end script" + "\r");
   dataAE.endSave(scriptsFilePath + "/" + aeFileName + "_" + millis() + "." + aeFileType);
 }
-
-

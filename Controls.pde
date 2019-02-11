@@ -1,3 +1,5 @@
+import java.awt.Desktop;
+
 void keyPressed() {
   if (key=='z' || key=='Z') reverseZ = !reverseZ;
   if (key=='d' || key=='D'){
@@ -38,9 +40,9 @@ void openAppFolderHandler(){
       print("Trying OS X Finder method.");
       //open(sketchPath(""));
       //String[] params = {  };
-      open(sketchPath("data"));
-      open(sketchPath("ManosOsc.app/Contents/Resources/Java/data"));
-      open(sketchPath("ManosOsc_LM.app/Contents/Resources/Java/data"));
+      Desktop.getDesktop().open(new File(sketchPath("data")));
+      Desktop.getDesktop().open(new File(sketchPath("ManosOsc.app/Contents/Resources/Java/data")));
+      Desktop.getDesktop().open(new File(sketchPath("ManosOsc_LM.app/Contents/Resources/Java/data")));
     }catch(Exception e){ }
   }else{
     try{
@@ -76,4 +78,3 @@ void scriptsFolderHandler(){
     }catch(Exception e){ }
   }
 }
-

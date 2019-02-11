@@ -109,6 +109,3 @@ void mayaKeysEnd() {
   */
   dataMaya.endSave(scriptsFilePath + "/" + mayaFileName + "_" + millis() + "." + mayaFileType);
 }
-
-
-
